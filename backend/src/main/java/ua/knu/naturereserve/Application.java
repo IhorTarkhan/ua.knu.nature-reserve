@@ -4,8 +4,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class NatureReserveApplication {
+public class Application {
   public static void main(String[] args) {
-    SpringApplication.run(NatureReserveApplication.class, args);
+    SpringApplication.run(Application.class, args);
   }
 }

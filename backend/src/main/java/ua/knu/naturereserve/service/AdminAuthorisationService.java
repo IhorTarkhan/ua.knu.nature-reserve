@@ -17,7 +17,7 @@ public class AdminAuthorisationService {
   private final AuthenticationManager authenticationManager;
   private final AdminRepository repository;
   private final JwtTokenProvider jwtTokenProvider;
-  private final UserSecurityService userSecurityService;
+  private final SecurityService securityService;
   // private final PasswordEncoder passwordEncoder;
 
   public JwtResponse login(AdminLoginRequest request) {
@@ -33,6 +33,6 @@ public class AdminAuthorisationService {
   }
 
   public Object getMyId() {
-    return userSecurityService.getCurrentAdmin().getId();
+    return securityService.getCurrentAdmin().getId();
   }
 }

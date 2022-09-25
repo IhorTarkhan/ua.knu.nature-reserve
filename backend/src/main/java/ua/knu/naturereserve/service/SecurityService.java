@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import ua.knu.naturereserve.entity.Admin;
 
 @Service
-public class UserSecurityService {
+public class SecurityService {
   public Admin getCurrentAdmin() {
     Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     return (Admin) principal;

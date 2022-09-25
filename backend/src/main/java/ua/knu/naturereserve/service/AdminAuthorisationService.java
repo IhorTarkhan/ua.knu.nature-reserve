@@ -4,12 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
-import ua.knu.naturereserve.dto.request.AdminLoginRequest;
+import ua.knu.naturereserve.dto.request.LoginRequest;
 import ua.knu.naturereserve.dto.response.JwtResponse;
 import ua.knu.naturereserve.entity.Admin;
 import ua.knu.naturereserve.exception.NotFoundException;
 import ua.knu.naturereserve.repository.AdminRepository;
 import ua.knu.naturereserve.security.JwtTokenProvider;
+import ua.knu.naturereserve.security.SecurityService;
 
 @Service
 @RequiredArgsConstructor
@@ -20,7 +21,7 @@ public class AdminAuthorisationService {
   private final SecurityService securityService;
   // private final PasswordEncoder passwordEncoder;
 
-  public JwtResponse login(AdminLoginRequest request) {
+  public JwtResponse login(LoginRequest request) {
     authenticationManager.authenticate(
         new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
     Admin admin =

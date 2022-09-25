@@ -7,6 +7,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import ua.knu.naturereserve.exception.NotFoundException;
 import ua.knu.naturereserve.repository.AdminRepository;
+import ua.knu.naturereserve.repository.ManagerRepository;
+import ua.knu.naturereserve.repository.OperatorRepository;
 
 import java.util.Optional;
 
@@ -15,7 +17,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AllUsersRoleDetailsService implements UserDetailsService {
   private final AdminRepository adminRepository;
-  // private final ClientRepository clientRepository;
+  private final ManagerRepository managerRepository;
+  private final OperatorRepository operatorRepository;
 
   @Override
   public UserDetails loadUserByUsername(String username) {
@@ -23,10 +26,14 @@ public class AllUsersRoleDetailsService implements UserDetailsService {
     if (admin.isPresent()) {
       return admin.get();
     }
-    // Optional<? extends UserDetails> client = clientRepository.findByEmail(username);
-    // if (client.isPresent()) {
-    //  return client.get();
-    // }
+    Optional<? extends UserDetails> manager = managerRepository.findByEmail(username);
+    if (manager.isPresent()) {
+      return manager.get();
+    }
+    Optional<? extends UserDetails> operator = operatorRepository.findByEmail(username);
+    if (operator.isPresent()) {
+      return operator.get();
+    }
     throw new NotFoundException("No user with email " + username);
   }
 }

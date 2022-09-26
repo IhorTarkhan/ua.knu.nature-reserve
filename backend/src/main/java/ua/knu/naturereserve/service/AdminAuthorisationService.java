@@ -6,6 +6,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.stereotype.Service;
 import ua.knu.naturereserve.dto.request.LoginRequest;
 import ua.knu.naturereserve.dto.response.JwtResponse;
+import ua.knu.naturereserve.dto.response.admin.CurrentAdminResponse;
 import ua.knu.naturereserve.entity.Admin;
 import ua.knu.naturereserve.exception.NotFoundException;
 import ua.knu.naturereserve.repository.AdminRepository;
@@ -19,7 +20,6 @@ public class AdminAuthorisationService {
   private final AdminRepository repository;
   private final JwtTokenProvider jwtTokenProvider;
   private final SecurityService securityService;
-  // private final PasswordEncoder passwordEncoder;
 
   public JwtResponse login(LoginRequest request) {
     authenticationManager.authenticate(
@@ -33,7 +33,8 @@ public class AdminAuthorisationService {
         .build();
   }
 
-  public Object getMyId() {
-    return securityService.getCurrentAdmin().getId();
+  public CurrentAdminResponse getMe() {
+    Admin currentAdmin = securityService.getCurrentAdmin();
+    return CurrentAdminResponse.builder().username(currentAdmin.getUsername()).build();
   }
 }

@@ -9,23 +9,35 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
+import { axios } from "../util/AxiosInterceptor";
+import { HOST } from "../constant/api";
+import { AxiosResponse } from "axios";
+import { useNavigate } from "react-router-dom";
+import { adminLocalStorage } from "../constant/localStorage";
+import { LoginRequest } from "../dto/request/LoginRequest";
+import { JwtResponse } from "../dto/response/JwtResponse";
 
 export const AdminLogin = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
   const handleSubmit = () => {
-    console.log({
-      email: email,
-      password: password,
-    });
+    const request: LoginRequest = { email, password };
+    axios
+      .post(HOST + "admin/login", request)
+      .then((x: AxiosResponse<JwtResponse>) => {
+        localStorage.setItem(adminLocalStorage, x.data.authorization);
+        console.log("logined")
+      })
+      .catch(alert);
   };
 
   return (
     <Container component={"main"} maxWidth={"xs"}>
       <Box
         sx={{
-          marginTop: 16,
+          marginTop: 8,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",

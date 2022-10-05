@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -7,77 +8,56 @@ import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import { useState } from "react";
 import { Logo } from "./Logo";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { home } from "../constant/navigation";
 
-const pages = ["Products", "Pricing", "Blog"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+interface Props {
+  pages: { label: string; location: string }[];
+}
+export const ResponsiveAppBar = (props: Props) => {
+  const location = useLocation();
+  const navigate = useNavigate();
 
-export const ResponsiveAppBar = () => {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
-  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget);
-  };
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
-
   return (
-    <AppBar position="static">
-      <Container maxWidth="xl">
+    <AppBar position={"static"}>
+      <Container maxWidth={"xl"}>
         <Toolbar disableGutters>
           <Box
             sx={{ alignItems: "center", display: { xs: "none", md: "flex" } }}
           >
             <Logo />
           </Box>
-
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
+              size={"large"}
+              aria-label={"account of current user"}
+              aria-controls={"menu-appbar"}
+              aria-haspopup={"true"}
+              onClick={(e) => setAnchorElNav(e.currentTarget)}
+              color={"inherit"}
             >
               <MenuIcon />
             </IconButton>
             <Menu
-              id="menu-appbar"
+              id={"menu-appbar"}
               anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
+              anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
               keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
+              transformOrigin={{ vertical: "top", horizontal: "left" }}
               open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: "block", md: "none" },
-              }}
+              onClose={() => setAnchorElNav(null)}
+              sx={{ display: { xs: "block", md: "none" } }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+              {props.pages.map((page) => (
+                <MenuItem key={page.label} onClick={() => setAnchorElNav(null)}>
+                  <Typography textAlign="center">{page.label}</Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -94,45 +74,52 @@ export const ResponsiveAppBar = () => {
           </Box>
 
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
+            {props.pages.map((page) => (
+              <Link
+                key={page.label}
+                to={page.location}
+                style={{
+                  margin: 20,
+                  color: "white",
+                  textDecoration:
+                    location.pathname.indexOf(page.location) == -1
+                      ? "none"
+                      : "underline",
+                }}
+                onClick={() => setAnchorElNav(null)}
               >
-                {page}
-              </Button>
+                {page.label}
+              </Link>
             ))}
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              {/*  todo set username instead of next component (or with it) */}
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+            <Tooltip title={"Open settings"}>
+              <IconButton
+                onClick={(event) => setAnchorElUser(event.currentTarget)}
+                sx={{ p: 0 }}
+              >
+                <AccountCircleIcon fontSize={"large"} sx={{ color: "white" }} />
               </IconButton>
             </Tooltip>
             <Menu
               sx={{ mt: "45px" }}
-              id="menu-appbar"
+              id={"menu-appbar"}
               anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
+              anchorOrigin={{ vertical: "top", horizontal: "right" }}
               keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
+              transformOrigin={{ vertical: "top", horizontal: "right" }}
               open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
+              onClose={() => setAnchorElUser(null)}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
+              <MenuItem
+                onClick={() => {
+                  setAnchorElUser(null);
+                  navigate(home);
+                }}
+              >
+                <Typography textAlign={"center"}>Logout</Typography>
+              </MenuItem>
             </Menu>
           </Box>
         </Toolbar>

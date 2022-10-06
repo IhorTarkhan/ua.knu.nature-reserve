@@ -17,6 +17,7 @@ import { navigation } from "../constant/navigation";
 
 interface Props {
   pages: { label: string; location: string }[];
+  username?: string;
 }
 
 export const Header = (props: Props): ReactElement => {
@@ -58,7 +59,7 @@ export const Header = (props: Props): ReactElement => {
             >
               {props.pages.map((page) => (
                 <MenuItem key={page.label} onClick={() => setAnchorElNav(null)}>
-                  <Typography textAlign="center">{page.label}</Typography>
+                  <Typography textAlign={"center"}>{page.label}</Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -94,35 +95,43 @@ export const Header = (props: Props): ReactElement => {
             ))}
           </Box>
 
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title={"Open settings"}>
-              <IconButton
-                onClick={(event) => setAnchorElUser(event.currentTarget)}
-                sx={{ p: 0 }}
+          {props.username && (
+            <Box sx={{ display: "flex", alignItems: "center", flexGrow: 0 }}>
+              <Typography mr={2} variant={"h6"}>
+                {props.username}
+              </Typography>
+              <Tooltip title={"Open settings"}>
+                <IconButton
+                  onClick={(event) => setAnchorElUser(event.currentTarget)}
+                  sx={{ p: 0 }}
+                >
+                  <AccountCircleIcon
+                    fontSize={"large"}
+                    sx={{ color: "white" }}
+                  />
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: "45px" }}
+                id={"menu-appbar"}
+                anchorEl={anchorElUser}
+                anchorOrigin={{ vertical: "top", horizontal: "right" }}
+                keepMounted
+                transformOrigin={{ vertical: "top", horizontal: "right" }}
+                open={Boolean(anchorElUser)}
+                onClose={() => setAnchorElUser(null)}
               >
-                <AccountCircleIcon fontSize={"large"} sx={{ color: "white" }} />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: "45px" }}
-              id={"menu-appbar"}
-              anchorEl={anchorElUser}
-              anchorOrigin={{ vertical: "top", horizontal: "right" }}
-              keepMounted
-              transformOrigin={{ vertical: "top", horizontal: "right" }}
-              open={Boolean(anchorElUser)}
-              onClose={() => setAnchorElUser(null)}
-            >
-              <MenuItem
-                onClick={() => {
-                  setAnchorElUser(null);
-                  navigate(navigation.home);
-                }}
-              >
-                <Typography textAlign={"center"}>Logout</Typography>
-              </MenuItem>
-            </Menu>
-          </Box>
+                <MenuItem
+                  onClick={() => {
+                    setAnchorElUser(null);
+                    navigate(navigation.home);
+                  }}
+                >
+                  <Typography textAlign={"center"}>Logout</Typography>
+                </MenuItem>
+              </Menu>
+            </Box>
+          )}
         </Toolbar>
       </Container>
     </AppBar>

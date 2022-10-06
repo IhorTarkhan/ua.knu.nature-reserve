@@ -12,7 +12,7 @@ export const AdminHome = (): ReactElement => {
 
   return (
     <>
-      <Header pages={pages} />
+      <Header pages={pages} username={"my_admin"} />
       Admin home
     </>
   );

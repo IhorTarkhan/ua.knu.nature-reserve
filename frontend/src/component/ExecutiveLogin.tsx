@@ -56,9 +56,7 @@ export const ExecutiveLogin = (props: Props): ReactElement => {
           <Avatar sx={{ margin: 1, backgroundColor: "secondary.main" }}>
             <LockOutlinedIcon />
           </Avatar>
-          <Typography component={"h1"} variant={"h5"}>
-            Sign in - {props.label}
-          </Typography>
+          <Typography variant={"h5"}>Sign in - {props.label}</Typography>
           <Box sx={{ marginTop: 1 }}>
             <TextField
               autoFocus

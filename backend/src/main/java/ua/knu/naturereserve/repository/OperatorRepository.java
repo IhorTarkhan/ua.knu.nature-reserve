@@ -6,5 +6,5 @@ import ua.knu.naturereserve.entity.Operator;
 import java.util.Optional;
 
 public interface OperatorRepository extends JpaRepository<Operator, Long> {
-  Optional<Operator> findByEmail(String email);
+  Optional<Operator> findByUsername(String username);
 }

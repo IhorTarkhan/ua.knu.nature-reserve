@@ -1,6 +1,6 @@
 import * as React from "react";
-import { ResponsiveAppBar } from "../component/ResponsiveAppBar";
-import { adminHome } from "../constant/navigation";
+import { ResponsiveAppBar } from "../../component/ResponsiveAppBar";
+import { adminHome } from "../../constant/navigation";
 
 export const AdminHome = () => {
   const navigation = [

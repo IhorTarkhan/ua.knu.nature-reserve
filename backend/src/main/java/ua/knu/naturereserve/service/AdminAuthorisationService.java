@@ -23,10 +23,10 @@ public class AdminAuthorisationService {
 
   public JwtResponse login(LoginRequest request) {
     authenticationManager.authenticate(
-        new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+        new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
     Admin admin =
         repository
-            .findByEmail(request.getEmail())
+            .findByUsername(request.getUsername())
             .orElseThrow(() -> new NotFoundException("Client doesn't exists"));
     return JwtResponse.builder()
         .authorization(jwtTokenProvider.generateToken(admin.getId().toString()))

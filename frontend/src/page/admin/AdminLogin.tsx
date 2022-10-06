@@ -9,24 +9,24 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { axios } from "../util/AxiosInterceptor";
-import { HOST } from "../constant/api";
+import { axios } from "../../util/AxiosInterceptor";
+import { HOST } from "../../constant/api";
 import { AxiosResponse } from "axios";
 import { useNavigate } from "react-router-dom";
-import { adminLocalStorage } from "../constant/localStorage";
-import { LoginRequest } from "../dto/request/LoginRequest";
-import { JwtResponse } from "../dto/response/JwtResponse";
-import { adminHome } from "../constant/navigation";
-import { SpinnerFullScreen } from "../component/SpinnerFullScreen";
+import { adminLocalStorage } from "../../constant/localStorage";
+import { LoginRequest } from "../../dto/request/LoginRequest";
+import { JwtResponse } from "../../dto/response/JwtResponse";
+import { adminHome } from "../../constant/navigation";
+import { SpinnerFullScreen } from "../../component/SpinnerFullScreen";
 
 export const AdminLogin = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState<string>("");
+  const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isSpinner, setIsSpinner] = useState<boolean>(false);
 
   const handleSubmit = () => {
-    const request: LoginRequest = { email, password };
+    const request: LoginRequest = { username, password };
     setIsSpinner(true);
     axios
       .post(HOST + "admin/login", request)
@@ -40,7 +40,7 @@ export const AdminLogin = () => {
 
   return (
     <>
-      <Container component={"main"} maxWidth={"xs"}>
+      <Container maxWidth={"xs"}>
         <Box
           sx={{
             marginTop: 8,
@@ -60,10 +60,10 @@ export const AdminLogin = () => {
               autoFocus
               required
               fullWidth
-              label={"Email Address"}
+              label={"Username"}
               sx={{ marginY: 2 }}
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
             />
             <TextField
               required

@@ -2,8 +2,8 @@ import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Home } from "./page/Hpme";
 import { adminHome, adminLogin, home } from "./constant/navigation";
-import { AdminLogin } from "./page/AdminLogin";
-import { AdminHome } from "./page/AdminHome";
+import { AdminLogin } from "./page/admin/AdminLogin";
+import { AdminHome } from "./page/admin/AdminHome";
 
 export const App = () => {
   return (

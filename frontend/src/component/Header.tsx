@@ -19,7 +19,7 @@ interface Props {
   pages: { label: string; location: string }[];
 }
 
-export const ResponsiveAppBar = (props: Props): ReactElement => {
+export const Header = (props: Props): ReactElement => {
   const location = useLocation();
   const navigate = useNavigate();
 

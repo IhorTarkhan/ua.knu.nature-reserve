@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ResponsiveAppBar } from "../../component/ResponsiveAppBar";
+import { Header } from "../../component/Header";
 import { navigation } from "../../constant/navigation";
 import { ReactElement } from "react";
 
@@ -12,7 +12,7 @@ export const AdminHome = (): ReactElement => {
 
   return (
     <>
-      <ResponsiveAppBar pages={pages} />
+      <Header pages={pages} />
       Admin home
     </>
   );

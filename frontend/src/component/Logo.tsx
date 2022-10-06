@@ -1,8 +1,9 @@
 import * as React from "react";
+import { ReactElement } from "react";
 import Typography from "@mui/material/Typography";
 import AdbIcon from "@mui/icons-material/Adb";
 
-export const Logo = () => {
+export const Logo = (): ReactElement => {
   return (
     <>
       <AdbIcon sx={{ mr: 1 }} />

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
+import { ReactElement, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -13,12 +13,13 @@ import MenuItem from "@mui/material/MenuItem";
 import { Logo } from "./Logo";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { home } from "../constant/navigation";
+import { navigation } from "../constant/navigation";
 
 interface Props {
   pages: { label: string; location: string }[];
 }
-export const ResponsiveAppBar = (props: Props) => {
+
+export const ResponsiveAppBar = (props: Props): ReactElement => {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -82,7 +83,7 @@ export const ResponsiveAppBar = (props: Props) => {
                   margin: 20,
                   color: "white",
                   textDecoration:
-                    location.pathname.indexOf(page.location) == -1
+                    location.pathname.indexOf(page.location) === -1
                       ? "none"
                       : "underline",
                 }}
@@ -115,7 +116,7 @@ export const ResponsiveAppBar = (props: Props) => {
               <MenuItem
                 onClick={() => {
                   setAnchorElUser(null);
-                  navigate(home);
+                  navigate(navigation.home);
                 }}
               >
                 <Typography textAlign={"center"}>Logout</Typography>

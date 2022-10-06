@@ -1,7 +1,7 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import { Navigation } from "../component/Navigation";
 
-export const Home = () => {
+export const Home = (): ReactElement => {
   return (
     <>
       <Navigation />

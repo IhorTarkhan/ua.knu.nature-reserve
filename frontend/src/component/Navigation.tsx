@@ -1,16 +1,16 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import { Link } from "react-router-dom";
-import { adminLogin, home } from "../constant/navigation";
+import { navigation } from "../constant/navigation";
 
-export const Navigation = () => {
+export const Navigation = (): ReactElement => {
   return (
     <nav>
       <ul>
         <li>
-          <Link to={home}>Home</Link>
+          <Link to={navigation.home}>Home</Link>
         </li>
         <li>
-          <Link to={adminLogin}>Admin Login</Link>
+          <Link to={navigation.admin.login}>Admin Login</Link>
         </li>
       </ul>
     </nav>

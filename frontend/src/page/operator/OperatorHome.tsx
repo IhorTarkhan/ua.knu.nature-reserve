@@ -3,7 +3,7 @@ import { ResponsiveAppBar } from "../../component/ResponsiveAppBar";
 import { navigation } from "../../constant/navigation";
 import { ReactElement } from "react";
 
-export const AdminHome = (): ReactElement => {
+export const OperatorHome = (): ReactElement => {
   const pages = [
     { label: "Home", location: navigation.admin.home },
     { label: "Pricing", location: "/admin/pricing" },
@@ -13,7 +13,7 @@ export const AdminHome = (): ReactElement => {
   return (
     <>
       <ResponsiveAppBar pages={pages} />
-      Admin home
+      Operator home
     </>
   );
 };

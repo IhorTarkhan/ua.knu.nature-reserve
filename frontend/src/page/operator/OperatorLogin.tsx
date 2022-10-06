@@ -1,17 +1,17 @@
 import * as React from "react";
 import { ReactElement } from "react";
 import { api } from "../../constant/api";
-import { adminLocalStorage } from "../../constant/localStorage";
+import { operatorLocalStorage } from "../../constant/localStorage";
 import { navigation } from "../../constant/navigation";
 import { ExecutiveLogin } from "../../component/ExecutiveLogin";
 
-export const AdminLogin = (): ReactElement => {
+export const OperatorLogin = (): ReactElement => {
   return (
     <ExecutiveLogin
-      url={api.HOST + api.admin.login}
-      localStorageKey={adminLocalStorage}
-      homeRouting={navigation.admin.home}
-      label={"Admin"}
+      url={api.HOST + api.operator.login}
+      localStorageKey={operatorLocalStorage}
+      homeRouting={navigation.operator.home}
+      label={"Operator"}
     />
   );
 };

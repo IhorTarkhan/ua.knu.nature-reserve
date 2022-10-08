@@ -59,17 +59,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .antMatchers(OPTIONS, "/**")
         .permitAll()
         // set access to "ADMIN" role
-        .antMatchers("/admin/login")
+        .antMatchers("/admin/authorisation/login")
         .permitAll()
         .antMatchers("/admin/**")
         .hasRole(Admin.ROLE)
         // set access to "MANAGER" role
-        .antMatchers("/manager/login")
+        .antMatchers("/manager/authorisation/login")
         .permitAll()
         .antMatchers("/manager/**")
         .hasRole(Manager.ROLE)
         // set access to "OPERATOR" role
-        .antMatchers("/operator/login")
+        .antMatchers("/operator/authorisation/login")
         .permitAll()
         .antMatchers("/operator/**")
         .hasRole(Operator.ROLE)

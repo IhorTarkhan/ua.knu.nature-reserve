@@ -23,6 +23,7 @@ public class SetUp {
           Admin.builder()
               .username("my_admin")
               .password(passwordEncoder.encode("password"))
+              .enabled(true)
               .build());
     }
   }

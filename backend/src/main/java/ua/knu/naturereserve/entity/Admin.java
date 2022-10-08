@@ -39,8 +39,8 @@ public class Admin implements UserDetails {
   @Column(name = "password", nullable = false)
   private String password;
 
-  @Column(name = "active", nullable = false, columnDefinition = "boolean default true")
-  private boolean active = true;
+  @Column(name = "enabled", nullable = false, columnDefinition = "boolean default true")
+  private boolean enabled = true;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -59,11 +59,6 @@ public class Admin implements UserDetails {
 
   @Override
   public boolean isCredentialsNonExpired() {
-    return true;
-  }
-
-  @Override
-  public boolean isEnabled() {
     return true;
   }
 }

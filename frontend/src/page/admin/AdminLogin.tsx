@@ -8,7 +8,7 @@ import { ExecutiveLogin } from "../../component/ExecutiveLogin";
 export const AdminLogin = (): ReactElement => {
   return (
     <ExecutiveLogin
-      url={api.HOST + api.admin.login}
+      url={api.HOST + api.admin.authorisation.login}
       localStorageKey={adminLocalStorage}
       homeRouting={navigation.admin.home}
       label={"Admin"}

@@ -1,4 +1,4 @@
-package ua.knu.naturereserve.service;
+package ua.knu.naturereserve.service.admin;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -6,14 +6,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.stereotype.Service;
 import ua.knu.naturereserve.dto.request.LoginRequest;
 import ua.knu.naturereserve.dto.response.JwtResponse;
-import ua.knu.naturereserve.dto.response.admin.AdminInfo;
+import ua.knu.naturereserve.dto.response.admin.AdminInfoResponse;
 import ua.knu.naturereserve.entity.Admin;
 import ua.knu.naturereserve.exception.NotFoundException;
 import ua.knu.naturereserve.repository.AdminRepository;
 import ua.knu.naturereserve.security.JwtTokenProvider;
 import ua.knu.naturereserve.security.SecurityService;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -35,24 +33,12 @@ public class AdminAuthorisationService {
         .build();
   }
 
-  public AdminInfo getCurrent() {
+  public AdminInfoResponse getCurrent() {
     Admin currentAdmin = securityService.getCurrentAdmin();
-    return AdminInfo.builder()
+    return AdminInfoResponse.builder()
         .id(currentAdmin.getId())
         .username(currentAdmin.getUsername())
-        .active(currentAdmin.isActive())
+        .active(currentAdmin.isEnabled())
         .build();
-  }
-
-  public List<AdminInfo> getAll() {
-    return repository.findByOrderById().stream()
-        .map(
-            x ->
-                AdminInfo.builder()
-                    .id(x.getId())
-                    .username(x.getUsername())
-                    .active(x.isActive())
-                    .build())
-        .toList();
   }
 }

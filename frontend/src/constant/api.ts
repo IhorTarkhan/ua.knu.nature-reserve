@@ -1,14 +1,25 @@
 export const api = {
   HOST: "http://localhost:8080",
   admin: {
-    login: "/admin/login",
-    current: "/admin/current",
-    getAll: "/admin/",
+    authorisation: {
+      login: "/admin/authorisation/login",
+      current: "/admin/authorisation/current",
+    },
+    management: {
+      getAll: "/admin/management/",
+      changePassword: "/admin/management/change-password",
+      deactivate: "/admin/management/deactivate/",
+      reactivate: "/admin/management/reactivate/",
+    },
   },
   manager: {
-    login: "/manager/login",
+    authorisation: {
+      login: "/manager/authorisation/login",
+    },
   },
   operator: {
-    login: "/operator/login",
+    authorisation: {
+      login: "/operator/authorisation/login",
+    },
   },
 };

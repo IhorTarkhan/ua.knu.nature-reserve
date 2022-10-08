@@ -2,7 +2,7 @@ import * as React from "react";
 import { ReactElement, useEffect, useRef, useState } from "react";
 import { Header } from "../../component/Header";
 import { navigation } from "../../constant/navigation";
-import { AdminInfo } from "../../dto/response/AdminInfo";
+import { AdminInfoResponse } from "../../dto/response/admin/AdminInfoResponse";
 import { axios } from "../../util/AxiosInterceptor";
 import { api } from "../../constant/api";
 import { AxiosResponse } from "axios";
@@ -28,6 +28,8 @@ import {
   DialogTitle,
   TextField,
 } from "@mui/material";
+import { SpinnerFullScreen } from "../../component/SpinnerFullScreen";
+import { AdminChangePasswordRequest } from "../../dto/request/admin/AdminChangePasswordRequest";
 
 const AdminTableHead = (): ReactElement => {
   return (
@@ -49,29 +51,34 @@ export const AdminsList = (): ReactElement => {
   ];
   const popupPasswordRef = useRef("popup-password");
 
-  const [currentAdmin, setCurrentAdmin] = useState<AdminInfo | null>(null);
-  const [admins, setAdmins] = useState<AdminInfo[]>([]);
+  const [isSpinner, setIsSpinner] = useState<boolean>(true);
+  const [currentAdmin, setCurrentAdmin] = useState<AdminInfoResponse>();
+  const [admins, setAdmins] = useState<AdminInfoResponse[]>([]);
   const [isPopup, setIsPopup] = useState<boolean>(false);
   const [popupTitle, setPopupTitle] = useState<string>("");
   const [popupContent, setPopupContent] = useState<ReactElement>(<></>);
   const [popupAccept, setPopupAccept] = useState<() => void>(() => {});
 
+  const updateAdmins = () => {
+    return axios
+      .get(api.HOST + api.admin.management.getAll)
+      .then((r: AxiosResponse<AdminInfoResponse[]>) => setAdmins(r.data))
+      .catch(alert);
+  };
+
   useEffect(() => {
     axios
-      .get(api.HOST + api.admin.current)
-      .then((r: AxiosResponse<AdminInfo>) => setCurrentAdmin(r.data))
+      .get(api.HOST + api.admin.authorisation.current)
+      .then((r: AxiosResponse<AdminInfoResponse>) => setCurrentAdmin(r.data))
       .catch(alert);
-    axios
-      .get(api.HOST + api.admin.getAll)
-      .then((r: AxiosResponse<AdminInfo[]>) => setAdmins(r.data))
-      .catch(alert);
+    updateAdmins().finally(() => setIsSpinner(false));
   }, []);
 
   const openPopup = () => {
     setIsPopup(true);
   };
 
-  const handleChangeAdminPassword = (admin: AdminInfo) => {
+  const handleChangeAdminPassword = (admin: AdminInfoResponse) => {
     setPopupTitle(
       `Do you want to change password to admin "${admin.username} (${admin.id})"?`
     );
@@ -89,39 +96,46 @@ export const AdminsList = (): ReactElement => {
     setPopupAccept(() => () => {
       // @ts-ignore
       const newPassword = popupPasswordRef.current.value;
-      console.log("newPassword = " + newPassword);
+      const request: AdminChangePasswordRequest = {
+        id: admin.id,
+        newPassword: newPassword,
+      };
+      setIsSpinner(true);
       axios
-        .get(api.HOST + api.admin.getAll)
-        .then((r: AxiosResponse<AdminInfo[]>) => setAdmins(r.data))
-        .catch(alert);
+        .put(api.HOST + api.admin.management.changePassword, request)
+        .then(updateAdmins)
+        .catch(alert)
+        .finally(() => setIsSpinner(false));
     });
     openPopup();
   };
 
-  const handleDeactivateAdmin = (admin: AdminInfo) => {
+  const handleDeactivateAdmin = (admin: AdminInfoResponse) => {
     setPopupTitle(
       `Do you want to deactivate admin "${admin.username} (${admin.id})"?`
     );
     setPopupContent(<></>);
     setPopupAccept(() => () => {
       axios
-        .get(api.HOST + api.admin.getAll)
-        .then((r: AxiosResponse<AdminInfo[]>) => setAdmins(r.data))
-        .catch(alert);
+        .put(api.HOST + api.admin.management.deactivate + admin.id)
+        .then(updateAdmins)
+        .catch(alert)
+        .finally(() => setIsSpinner(false));
     });
     openPopup();
   };
 
-  const handleReactivateAdmin = (admin: AdminInfo) => {
+  const handleReactivateAdmin = (admin: AdminInfoResponse) => {
     setPopupTitle(
       `Do you want to reactivate admin "${admin.username} (${admin.id})"?`
     );
     setPopupContent(<></>);
     setPopupAccept(() => () => {
       axios
-        .get(api.HOST + api.admin.getAll)
-        .then((r: AxiosResponse<AdminInfo[]>) => setAdmins(r.data))
-        .catch(alert);
+        .put(api.HOST + api.admin.management.reactivate + admin.id)
+        .then(updateAdmins)
+        .catch(alert)
+        .finally(() => setIsSpinner(false));
     });
     openPopup();
   };
@@ -209,6 +223,8 @@ export const AdminsList = (): ReactElement => {
           </Button>
         </DialogActions>
       </Dialog>
+
+      {isSpinner && <SpinnerFullScreen />}
     </>
   );
 };

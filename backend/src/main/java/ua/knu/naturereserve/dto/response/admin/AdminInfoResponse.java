@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AdminInfo {
+public class AdminInfoResponse {
   private Long id;
   private String username;
   private boolean active;

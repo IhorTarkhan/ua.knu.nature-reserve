@@ -8,7 +8,7 @@ import { ExecutiveLogin } from "../../component/ExecutiveLogin";
 export const OperatorLogin = (): ReactElement => {
   return (
     <ExecutiveLogin
-      url={api.HOST + api.operator.login}
+      url={api.HOST + api.operator.authorisation.login}
       localStorageKey={operatorLocalStorage}
       homeRouting={navigation.operator.home}
       label={"Operator"}

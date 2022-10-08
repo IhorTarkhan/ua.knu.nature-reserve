@@ -39,6 +39,9 @@ public class Operator implements UserDetails {
   @Column(name = "password", nullable = false)
   private String password;
 
+  @Column(name = "enabled", nullable = false, columnDefinition = "boolean default true")
+  private boolean enabled = true;
+
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
     return Collections.singleton(new SimpleGrantedAuthority("ROLE_" + ROLE));
@@ -56,11 +59,6 @@ public class Operator implements UserDetails {
 
   @Override
   public boolean isCredentialsNonExpired() {
-    return true;
-  }
-
-  @Override
-  public boolean isEnabled() {
     return true;
   }
 }

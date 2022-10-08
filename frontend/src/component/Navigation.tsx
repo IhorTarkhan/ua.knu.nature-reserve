@@ -7,10 +7,13 @@ export const Navigation = (): ReactElement => {
     <nav>
       <ul>
         <li>
-          <Link to={navigation.home}>Home</Link>
+          <Link to={navigation.admin.login}>Admin Login</Link>
         </li>
         <li>
-          <Link to={navigation.admin.login}>Admin Login</Link>
+          <Link to={navigation.manager.login}>Manager Login</Link>
+        </li>
+        <li>
+          <Link to={navigation.operator.login}>Operator Login</Link>
         </li>
       </ul>
     </nav>

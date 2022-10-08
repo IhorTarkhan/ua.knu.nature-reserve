@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ua.knu.naturereserve.dto.request.LoginRequest;
 import ua.knu.naturereserve.dto.response.JwtResponse;
-import ua.knu.naturereserve.dto.response.admin.CurrentAdminResponse;
+import ua.knu.naturereserve.dto.response.admin.AdminInfo;
 import ua.knu.naturereserve.service.AdminAuthorisationService;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,8 +24,13 @@ public class AdminController {
     return service.login(request);
   }
 
-  @GetMapping("/me")
-  public CurrentAdminResponse getMe() {
-    return service.getMe();
+  @GetMapping("/current")
+  public AdminInfo getCurrent() {
+    return service.getCurrent();
+  }
+
+  @GetMapping("/")
+  public List<AdminInfo> getAll() {
+    return service.getAll();
   }
 }

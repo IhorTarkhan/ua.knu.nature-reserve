@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CurrentAdminResponse {
+public class AdminInfo {
+  private Long id;
   private String username;
+  private boolean active;
 }

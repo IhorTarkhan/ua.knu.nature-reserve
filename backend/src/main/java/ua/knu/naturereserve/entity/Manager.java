@@ -39,6 +39,9 @@ public class Manager implements UserDetails {
   @Column(name = "password", nullable = false)
   private String password;
 
+  @Column(name = "active", nullable = false, columnDefinition = "boolean default true")
+  private boolean active;
+
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
     return Collections.singleton(new SimpleGrantedAuthority("ROLE_" + ROLE));

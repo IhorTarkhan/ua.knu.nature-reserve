@@ -19,6 +19,7 @@ import KeyIcon from "@mui/icons-material/Key";
 import IconButton from "@mui/material/IconButton";
 import BlockIcon from "@mui/icons-material/Block";
 import Tooltip from "@mui/material/Tooltip";
+import AddIcon from "@mui/icons-material/Add";
 import FaceIcon from "@mui/icons-material/Face";
 import {
   Button,
@@ -30,6 +31,9 @@ import {
 } from "@mui/material";
 import { SpinnerFullScreen } from "../../component/SpinnerFullScreen";
 import { AdminChangePasswordRequest } from "../../dto/request/admin/AdminChangePasswordRequest";
+import Box from "@mui/material/Box";
+import { CreateNewAdminPopup } from "../../component/admin/CreateNewAdminPopup";
+import { CreateAdminRequest } from "../../dto/request/admin/CreateAdminRequest";
 
 const AdminTableHead = (): ReactElement => {
   return (
@@ -59,6 +63,8 @@ export const AdminsList = (): ReactElement => {
   const [popupContent, setPopupContent] = useState<ReactElement>(<></>);
   const [popupAccept, setPopupAccept] = useState<() => void>(() => {});
 
+  const [createPopup, setCreatePopup] = useState<boolean>(false);
+
   const updateAdmins = () => {
     return axios
       .get(api.HOST + api.admin.management.getAll)
@@ -83,15 +89,12 @@ export const AdminsList = (): ReactElement => {
       `Do you want to change password to admin "${admin.username} (${admin.id})"?`
     );
     setPopupContent(
-      <>
-        <TextField
-          id={"popup-new-password"}
-          label={"New password"}
-          type={"password"}
-          style={{ width: "100%", marginTop: 10 }}
-          inputRef={popupPasswordRef}
-        />
-      </>
+      <TextField
+        label={"New password"}
+        type={"password"}
+        style={{ width: "100%", marginTop: 10 }}
+        inputRef={popupPasswordRef}
+      />
     );
     setPopupAccept(() => () => {
       // @ts-ignore
@@ -140,6 +143,13 @@ export const AdminsList = (): ReactElement => {
     openPopup();
   };
 
+  const handleCreateAdmin = (admin?: CreateAdminRequest) => {
+    if (admin) {
+      console.log(admin);
+    }
+    setCreatePopup(false);
+  };
+
   const handleRejectPopup = () => {
     setIsPopup(false);
   };
@@ -153,9 +163,16 @@ export const AdminsList = (): ReactElement => {
     <>
       <Header pages={pages} username={currentAdmin?.username} />
       <Container>
-        <Typography variant={"h4"} m={2}>
-          Admins
-        </Typography>
+        <Box display={"flex"} justifyContent={"space-between"}>
+          <Typography variant={"h4"} m={2}>
+            Admins
+          </Typography>
+          <Tooltip title={"Create new Admin"} sx={{ my: "auto" }}>
+            <IconButton onClick={() => setCreatePopup(true)}>
+              <AddIcon fontSize={"large"} />
+            </IconButton>
+          </Tooltip>
+        </Box>
         <TableContainer component={Paper}>
           <Table aria-label={"simple table"}>
             <AdminTableHead />
@@ -223,6 +240,8 @@ export const AdminsList = (): ReactElement => {
           </Button>
         </DialogActions>
       </Dialog>
+
+      <CreateNewAdminPopup isPopup={createPopup} close={handleCreateAdmin} />
 
       {isSpinner && <SpinnerFullScreen />}
     </>

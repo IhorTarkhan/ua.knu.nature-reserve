@@ -145,7 +145,11 @@ export const AdminsList = (): ReactElement => {
 
   const handleCreateAdmin = (admin?: CreateAdminRequest) => {
     if (admin) {
-      console.log(admin);
+      axios
+        .post(api.HOST + api.admin.management.create, admin)
+        .then(updateAdmins)
+        .catch(alert)
+        .finally(() => setIsSpinner(false));
     }
     setCreatePopup(false);
   };

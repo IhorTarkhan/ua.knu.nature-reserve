@@ -10,6 +10,7 @@ export const api = {
       changePassword: "/admin/management/change-password",
       deactivate: "/admin/management/deactivate/",
       reactivate: "/admin/management/reactivate/",
+      create: "/admin/management/",
     },
   },
   manager: {

@@ -4,8 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ua.knu.naturereserve.dto.request.admin.AdminChangePasswordRequest;
+import ua.knu.naturereserve.dto.request.admin.CreateAdminRequest;
 import ua.knu.naturereserve.dto.response.admin.AdminInfoResponse;
 import ua.knu.naturereserve.entity.Admin;
+import ua.knu.naturereserve.exception.ConflictException;
 import ua.knu.naturereserve.exception.ForbiddenException;
 import ua.knu.naturereserve.exception.NotFoundException;
 import ua.knu.naturereserve.repository.AdminRepository;
@@ -61,5 +63,18 @@ public class AdminManagementService {
 
   private Admin getAdmin(Long id) {
     return repository.findById(id).orElseThrow(() -> new NotFoundException("Admin doesn't exists"));
+  }
+
+  public void create(CreateAdminRequest request) {
+    if (repository.findByUsername(request.getUsername()).isPresent()) {
+      throw new ConflictException(
+          "Admin with username %s already exist".formatted(request.getUsername()));
+    }
+    repository.save(
+        Admin.builder()
+            .username(request.getUsername())
+            .password(passwordEncoder.encode(request.getPassword()))
+            .enabled(true)
+            .build());
   }
 }

@@ -1,24 +1,21 @@
-import { adminHeader, managerHeader, operatorHeader } from "../constant/header";
-import {
-  adminLocalStorage,
-  managerLocalStorage,
-  operatorLocalStorage,
-} from "../constant/localStorage";
-
 export const axios = require("axios");
 
 type Request = { headers: any; url: string };
 
-function setToHeaderFrom(req: Request, key: string, header: string) {
-  const clientHeader: string | null = localStorage.getItem(key);
-  if (clientHeader) {
-    req.headers[header] = "Bearer " + clientHeader;
+function setAuthorizationHeaderIfNeeded(req: Request, key: string) {
+  const pathname = new URL(req.url).pathname;
+  if (pathname.startsWith(`/${key}`) && pathname !== `/${key}/login`) {
+    const value = "Authorization-" + key.charAt(0).toUpperCase() + key.slice(1);
+    const clientHeader: string | null = localStorage.getItem(value);
+    if (clientHeader) {
+      req.headers[value] = "Bearer " + clientHeader;
+    }
   }
 }
 
 axios.interceptors.request.use((req: Request) => {
-  setToHeaderFrom(req, adminLocalStorage, adminHeader);
-  setToHeaderFrom(req, managerLocalStorage, managerHeader);
-  setToHeaderFrom(req, operatorLocalStorage, operatorHeader);
+  setAuthorizationHeaderIfNeeded(req, "admin");
+  setAuthorizationHeaderIfNeeded(req, "manager");
+  setAuthorizationHeaderIfNeeded(req, "operator");
   return req;
 });

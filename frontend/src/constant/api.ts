@@ -18,6 +18,9 @@ export const api = {
       login: "/manager/authorisation/login",
       current: "/manager/authorisation/current",
     },
+    animals: {
+      getAll: "/manager/animals",
+    },
   },
   operator: {
     authorisation: {

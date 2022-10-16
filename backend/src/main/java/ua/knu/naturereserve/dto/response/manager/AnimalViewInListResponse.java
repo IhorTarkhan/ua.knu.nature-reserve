@@ -1,4 +1,4 @@
-package ua.knu.naturereserve.dto.request.manager;
+package ua.knu.naturereserve.dto.response.manager;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

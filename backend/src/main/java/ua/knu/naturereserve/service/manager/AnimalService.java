@@ -2,7 +2,7 @@ package ua.knu.naturereserve.service.manager;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ua.knu.naturereserve.dto.request.manager.AnimalViewInListResponse;
+import ua.knu.naturereserve.dto.response.manager.AnimalViewInListResponse;
 import ua.knu.naturereserve.repository.AnimalRepository;
 
 import java.util.List;

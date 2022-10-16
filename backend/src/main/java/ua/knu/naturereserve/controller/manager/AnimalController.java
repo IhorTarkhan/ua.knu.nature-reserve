@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ua.knu.naturereserve.dto.request.manager.AnimalViewInListResponse;
+import ua.knu.naturereserve.dto.response.manager.AnimalViewInListResponse;
 import ua.knu.naturereserve.service.manager.AnimalService;
 
 import java.util.List;

@@ -30,8 +30,9 @@ public class Animal {
   @Column(name = "is_migration", nullable = false)
   private boolean isMigration;
 
+  @Builder.Default
   @Column(name = "is_alive", nullable = false)
-  private boolean isAlive;
+  private boolean isAlive = true;
 
   @OneToMany(mappedBy = "animal")
   private List<AnimalIllness> illnesses;

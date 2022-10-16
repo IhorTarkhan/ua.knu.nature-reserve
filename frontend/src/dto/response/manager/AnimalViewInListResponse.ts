@@ -5,4 +5,5 @@ export type AnimalViewInListResponse = {
   behavioral: string;
   migration: boolean;
   alive: boolean;
+  illnessNow: boolean;
 };

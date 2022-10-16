@@ -3,6 +3,7 @@ package ua.knu.naturereserve.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -34,6 +35,6 @@ public class Animal {
   @Column(name = "is_alive", nullable = false)
   private boolean isAlive = true;
 
-  @OneToMany(mappedBy = "animal")
-  private List<AnimalIllness> illnesses;
+  @OneToMany(fetch = FetchType.EAGER, mappedBy = "animal", cascade = CascadeType.ALL)
+  private List<AnimalIllness> illnesses = new ArrayList<>();
 }

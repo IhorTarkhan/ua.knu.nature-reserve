@@ -3,6 +3,7 @@ package ua.knu.naturereserve.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -17,9 +18,15 @@ public class AnimalIllness {
   @Column(name = "id")
   private Long id;
 
-  @ManyToOne
+  @ManyToOne(targetEntity = Animal.class)
   @JoinColumn(name = "animal_id", nullable = false)
   private Animal animal;
+
+  @Column(name = "started", nullable = false)
+  private LocalDateTime start;
+
+  @Column(name = "ended")
+  private LocalDateTime end;
 
   @Column(name = "description", nullable = false)
   private String description;

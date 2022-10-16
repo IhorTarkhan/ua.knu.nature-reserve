@@ -11,13 +11,18 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import AddIcon from "@mui/icons-material/Add";
-import MinimizeIcon from "@mui/icons-material/Minimize";
 import { axios } from "../../util/AxiosInterceptor";
 import { api } from "../../constant/api";
 import { AxiosResponse } from "axios";
 import { SpinnerFullScreen } from "../../component/SpinnerFullScreen";
 import { AnimalViewInListResponse } from "../../dto/response/manager/AnimalViewInListResponse";
 import Typography from "@mui/material/Typography";
+import CoronavirusIcon from "@mui/icons-material/Coronavirus";
+import MilitaryTechIcon from "@mui/icons-material/MilitaryTech";
+import DoNotDisturbIcon from "@mui/icons-material/DoNotDisturb";
+import IconButton from "@mui/material/IconButton";
+import RemoveIcon from "@mui/icons-material/Remove";
+import Tooltip from "@mui/material/Tooltip";
 
 const pages = [
   { label: "Animals", location: nav.admin.admins },
@@ -59,6 +64,8 @@ export const ManagerAnimalsScreen = (): ReactElement => {
                 <TableCell>Behavioral</TableCell>
                 <TableCell align={"center"}>Migration</TableCell>
                 <TableCell align={"center"}>Alive</TableCell>
+                <TableCell align={"center"}>Is illness now</TableCell>
+                <TableCell align={"center"}>Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -69,10 +76,33 @@ export const ManagerAnimalsScreen = (): ReactElement => {
                   <TableCell>{row.lookup}</TableCell>
                   <TableCell>{row.behavioral}</TableCell>
                   <TableCell align={"center"}>
-                    {row.migration ? <AddIcon /> : <MinimizeIcon />}
+                    {row.migration ? <AddIcon /> : <RemoveIcon />}
                   </TableCell>
                   <TableCell align={"center"}>
-                    {row.alive ? <AddIcon /> : <MinimizeIcon />}
+                    {row.alive ? <AddIcon /> : <RemoveIcon />}
+                  </TableCell>
+                  <TableCell align={"center"}>
+                    {row.illnessNow ? <AddIcon /> : <RemoveIcon />}
+                  </TableCell>
+                  <TableCell align={"center"}>
+                    <Tooltip title={"Got sick"}>
+                      <IconButton
+                        onClick={() => alert(1)}
+                        disabled={row.illnessNow}
+                      >
+                        <CoronavirusIcon fontSize={"large"} />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title={"Died"}>
+                      <IconButton onClick={() => alert(2)}>
+                        <MilitaryTechIcon fontSize={"large"} />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title={"Disable"}>
+                      <IconButton onClick={() => alert(3)}>
+                        <DoNotDisturbIcon fontSize={"large"} />
+                      </IconButton>
+                    </Tooltip>
                   </TableCell>
                 </TableRow>
               ))}

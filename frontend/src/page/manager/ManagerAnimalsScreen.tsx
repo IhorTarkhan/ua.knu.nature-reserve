@@ -11,13 +11,13 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 
-export const ManagerAnimalsScreen = (): ReactElement => {
-  const pages = [
-    { label: "Animals", location: nav.admin.admins },
-    { label: "In dev", location: "/in-dev" },
-    { label: "In dev", location: "/in-dev" },
-  ];
+const pages = [
+  { label: "Animals", location: nav.admin.admins },
+  { label: "In dev", location: "/in-dev" },
+  { label: "In dev", location: "/in-dev" },
+];
 
+export const ManagerAnimalsScreen = (): ReactElement => {
   return (
     <>
       <Header pages={pages} />

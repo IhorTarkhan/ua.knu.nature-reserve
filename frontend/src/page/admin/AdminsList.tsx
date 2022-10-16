@@ -45,12 +45,13 @@ const AdminTableHead = (): ReactElement => {
   );
 };
 
+const pages = [
+  { label: "Home", location: nav.admin.admins },
+  { label: "Pricing", location: "/admin/pricing" },
+  { label: "Blog", location: "/admin/blog" },
+];
+
 export const AdminsList = (): ReactElement => {
-  const pages = [
-    { label: "Home", location: nav.admin.admins },
-    { label: "Pricing", location: "/admin/pricing" },
-    { label: "Blog", location: "/admin/blog" },
-  ];
   const popupPasswordRef = useRef("popup-password");
 
   const [isSpinner, setIsSpinner] = useState<boolean>(true);

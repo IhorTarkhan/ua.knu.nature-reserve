@@ -5,12 +5,12 @@ export const api = {
       login: "/admin/authorisation/login",
       current: "/admin/authorisation/current",
     },
-    management: {
-      getAll: "/admin/management/",
-      changePassword: "/admin/management/change-password",
-      deactivate: "/admin/management/deactivate/",
-      reactivate: "/admin/management/reactivate/",
-      create: "/admin/management/",
+    admins: {
+      getAll: "/admin/admins/",
+      changePassword: "/admin/admins/change-password",
+      deactivate: "/admin/admins/deactivate/",
+      reactivate: "/admin/admins/reactivate/",
+      create: "/admin/admins/",
     },
   },
   manager: {

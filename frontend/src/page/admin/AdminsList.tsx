@@ -67,7 +67,7 @@ export const AdminsList = (): ReactElement => {
 
   const updateAdmins = () => {
     return axios
-      .get(api.HOST + api.admin.management.getAll)
+      .get(api.HOST + api.admin.admins.getAll)
       .then((r: AxiosResponse<AdminInfoResponse[]>) => setAdmins(r.data))
       .catch(alert);
   };
@@ -105,7 +105,7 @@ export const AdminsList = (): ReactElement => {
       };
       setIsSpinner(true);
       axios
-        .put(api.HOST + api.admin.management.changePassword, request)
+        .put(api.HOST + api.admin.admins.changePassword, request)
         .then(updateAdmins)
         .catch(alert)
         .finally(() => setIsSpinner(false));
@@ -120,7 +120,7 @@ export const AdminsList = (): ReactElement => {
     setPopupContent(<></>);
     setPopupAccept(() => () => {
       axios
-        .put(api.HOST + api.admin.management.deactivate + admin.id)
+        .put(api.HOST + api.admin.admins.deactivate + admin.id)
         .then(updateAdmins)
         .catch(alert)
         .finally(() => setIsSpinner(false));
@@ -135,7 +135,7 @@ export const AdminsList = (): ReactElement => {
     setPopupContent(<></>);
     setPopupAccept(() => () => {
       axios
-        .put(api.HOST + api.admin.management.reactivate + admin.id)
+        .put(api.HOST + api.admin.admins.reactivate + admin.id)
         .then(updateAdmins)
         .catch(alert)
         .finally(() => setIsSpinner(false));
@@ -146,7 +146,7 @@ export const AdminsList = (): ReactElement => {
   const handleCreateAdmin = (admin?: CreateAdminRequest) => {
     if (admin) {
       axios
-        .post(api.HOST + api.admin.management.create, admin)
+        .post(api.HOST + api.admin.admins.create, admin)
         .then(updateAdmins)
         .catch(alert)
         .finally(() => setIsSpinner(false));

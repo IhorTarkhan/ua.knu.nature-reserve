@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(path = "/admin/management")
+@RequestMapping(path = "/admin/admins")
 public class AdminManagementController {
   private final AdminManagementService service;
 

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { ReactElement } from "react";
 import { api } from "../../constant/api";
-import { navigation } from "../../constant/navigation";
+import { nav } from "../../constant/nav";
 import { ExecutiveLogin } from "../../component/ExecutiveLogin";
 
 export const ManagerLogin = (): ReactElement => {
@@ -9,7 +9,7 @@ export const ManagerLogin = (): ReactElement => {
     <ExecutiveLogin
       url={api.HOST + api.manager.authorisation.login}
       localStorageKey={"Authorization-Manager"}
-      homeRouting={navigation.manager.home}
+      homeRouting={nav.manager.animals}
       label={"Manager"}
     />
   );

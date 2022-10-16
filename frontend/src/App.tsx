@@ -1,11 +1,11 @@
 import React, { ReactElement } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { navigation } from "./constant/navigation";
+import { nav } from "./constant/nav";
 import { Home } from "./page/Hpme";
 import { AdminLogin } from "./page/admin/AdminLogin";
 import { AdminsList } from "./page/admin/AdminsList";
 import { ManagerLogin } from "./page/manager/ManagerLogin";
-import { ManagerHome } from "./page/manager/ManagerHome";
+import { ManagerAnimalsScreen } from "./page/manager/ManagerAnimalsScreen";
 import { OperatorLogin } from "./page/operator/OperatorLogin";
 import { OperatorHome } from "./page/operator/OperatorHome";
 
@@ -13,13 +13,13 @@ export const App = (): ReactElement => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path={navigation.home} element={<Home />} />
-        <Route path={navigation.admin.login} element={<AdminLogin />} />
-        <Route path={navigation.admin.home} element={<AdminsList />} />
-        <Route path={navigation.manager.login} element={<ManagerLogin />} />
-        <Route path={navigation.manager.home} element={<ManagerHome />} />
-        <Route path={navigation.operator.login} element={<OperatorLogin />} />
-        <Route path={navigation.operator.home} element={<OperatorHome />} />
+        <Route path={nav.home} element={<Home />} />
+        <Route path={nav.admin.login} element={<AdminLogin />} />
+        <Route path={nav.admin.admins} element={<AdminsList />} />
+        <Route path={nav.manager.login} element={<ManagerLogin />} />
+        <Route path={nav.manager.animals} element={<ManagerAnimalsScreen />} />
+        <Route path={nav.operator.login} element={<OperatorLogin />} />
+        <Route path={nav.operator.home} element={<OperatorHome />} />
       </Routes>
     </BrowserRouter>
   );

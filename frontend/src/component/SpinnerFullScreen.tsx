@@ -1,5 +1,5 @@
 import React, { ReactElement } from "react";
-import { CircularProgress } from "@mui/material";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export const SpinnerFullScreen = (): ReactElement => {
   return (

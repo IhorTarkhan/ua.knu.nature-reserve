@@ -6,14 +6,14 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import { Logo } from "./Logo";
+import MenuIcon from "@mui/icons-material/Menu";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { Logo } from "./Logo";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { navigation } from "../constant/navigation";
+import { nav } from "../constant/nav";
 import { axios } from "../util/AxiosInterceptor";
 import { api } from "../constant/api";
 import { AxiosResponse } from "axios";
@@ -145,7 +145,7 @@ export const Header = (props: Props): ReactElement => {
                 <MenuItem
                   onClick={() => {
                     setAnchorElUser(null);
-                    navigate(navigation.home);
+                    navigate(nav.home);
                   }}
                 >
                   <Typography textAlign={"center"}>Logout</Typography>

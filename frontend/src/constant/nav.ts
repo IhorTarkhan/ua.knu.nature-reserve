@@ -1,12 +1,12 @@
-export const navigation = {
+export const nav = {
   home: "/",
   admin: {
     login: "/admin/login",
-    home: "/admin/home",
+    admins: "/admin/home",
   },
   manager: {
     login: "/manager/login",
-    home: "/manager/home",
+    animals: "/manager/home",
   },
   operator: {
     login: "/operator/login",

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { ReactElement, useEffect, useRef, useState } from "react";
 import { Header } from "../../component/Header";
-import { navigation } from "../../constant/navigation";
+import { nav } from "../../constant/nav";
 import { AdminInfoResponse } from "../../dto/response/admin/AdminInfoResponse";
 import { axios } from "../../util/AxiosInterceptor";
 import { api } from "../../constant/api";
@@ -15,20 +15,18 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import KeyIcon from "@mui/icons-material/Key";
 import IconButton from "@mui/material/IconButton";
-import BlockIcon from "@mui/icons-material/Block";
 import Tooltip from "@mui/material/Tooltip";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import TextField from "@mui/material/TextField";
+import KeyIcon from "@mui/icons-material/Key";
+import BlockIcon from "@mui/icons-material/Block";
 import AddIcon from "@mui/icons-material/Add";
 import FaceIcon from "@mui/icons-material/Face";
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  TextField,
-} from "@mui/material";
 import { SpinnerFullScreen } from "../../component/SpinnerFullScreen";
 import { AdminChangePasswordRequest } from "../../dto/request/admin/AdminChangePasswordRequest";
 import Box from "@mui/material/Box";
@@ -49,7 +47,7 @@ const AdminTableHead = (): ReactElement => {
 
 export const AdminsList = (): ReactElement => {
   const pages = [
-    { label: "Home", location: navigation.admin.home },
+    { label: "Home", location: nav.admin.admins },
     { label: "Pricing", location: "/admin/pricing" },
     { label: "Blog", location: "/admin/blog" },
   ];
@@ -173,7 +171,7 @@ export const AdminsList = (): ReactElement => {
           </Tooltip>
         </Box>
         <TableContainer component={Paper}>
-          <Table aria-label={"simple table"}>
+          <Table>
             <AdminTableHead />
             <TableBody>
               {admins

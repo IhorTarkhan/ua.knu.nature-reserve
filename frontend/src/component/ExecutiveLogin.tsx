@@ -1,14 +1,12 @@
 import * as React from "react";
 import { ReactElement, useState } from "react";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import {
-  Avatar,
-  Box,
-  Button,
-  Container,
-  TextField,
-  Typography,
-} from "@mui/material";
+import Avatar from "@mui/material/Avatar";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
 import { axios } from "../util/AxiosInterceptor";
 import { AxiosResponse } from "axios";
 import { useNavigate } from "react-router-dom";

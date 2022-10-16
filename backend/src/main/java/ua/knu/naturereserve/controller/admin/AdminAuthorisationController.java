@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ua.knu.naturereserve.dto.request.LoginRequest;
 import ua.knu.naturereserve.dto.response.JwtResponse;
-import ua.knu.naturereserve.dto.response.admin.AdminInfoResponse;
+import ua.knu.naturereserve.dto.response.admin.CurrentAuthorisationInfoResponse;
 import ua.knu.naturereserve.service.admin.AdminAuthorisationService;
 
 @RestController
@@ -19,7 +19,7 @@ public class AdminAuthorisationController {
   }
 
   @GetMapping("/current")
-  public AdminInfoResponse getCurrent() {
+  public CurrentAuthorisationInfoResponse getCurrent() {
     return service.getCurrent();
   }
 }

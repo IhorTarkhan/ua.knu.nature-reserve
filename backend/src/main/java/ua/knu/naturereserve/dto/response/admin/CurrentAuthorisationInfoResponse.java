@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AdminInfoResponse {
+public class CurrentAuthorisationInfoResponse {
   private Long id;
   private String username;
   private boolean active;

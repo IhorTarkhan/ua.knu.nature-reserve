@@ -6,7 +6,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.stereotype.Service;
 import ua.knu.naturereserve.dto.request.LoginRequest;
 import ua.knu.naturereserve.dto.response.JwtResponse;
-import ua.knu.naturereserve.dto.response.admin.AdminInfoResponse;
+import ua.knu.naturereserve.dto.response.admin.CurrentAuthorisationInfoResponse;
 import ua.knu.naturereserve.entity.Admin;
 import ua.knu.naturereserve.exception.NotFoundException;
 import ua.knu.naturereserve.repository.AdminRepository;
@@ -33,12 +33,12 @@ public class AdminAuthorisationService {
         .build();
   }
 
-  public AdminInfoResponse getCurrent() {
-    Admin currentAdmin = securityService.getCurrentAdmin();
-    return AdminInfoResponse.builder()
-        .id(currentAdmin.getId())
-        .username(currentAdmin.getUsername())
-        .active(currentAdmin.isEnabled())
+  public CurrentAuthorisationInfoResponse getCurrent() {
+    var current = securityService.getCurrentAdmin();
+    return CurrentAuthorisationInfoResponse.builder()
+        .id(current.getId())
+        .username(current.getUsername())
+        .active(current.isEnabled())
         .build();
   }
 }

@@ -5,7 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ua.knu.naturereserve.dto.request.admin.AdminChangePasswordRequest;
 import ua.knu.naturereserve.dto.request.admin.CreateAdminRequest;
-import ua.knu.naturereserve.dto.response.admin.AdminInfoResponse;
+import ua.knu.naturereserve.dto.response.admin.CurrentAuthorisationInfoResponse;
 import ua.knu.naturereserve.entity.Admin;
 import ua.knu.naturereserve.exception.ConflictException;
 import ua.knu.naturereserve.exception.ForbiddenException;
@@ -22,11 +22,11 @@ public class AdminManagementService {
   private final SecurityService securityService;
   private final PasswordEncoder passwordEncoder;
 
-  public List<AdminInfoResponse> getAll() {
+  public List<CurrentAuthorisationInfoResponse> getAll() {
     return repository.findByOrderById().stream()
         .map(
             x ->
-                AdminInfoResponse.builder()
+                CurrentAuthorisationInfoResponse.builder()
                     .id(x.getId())
                     .username(x.getUsername())
                     .active(x.isEnabled())

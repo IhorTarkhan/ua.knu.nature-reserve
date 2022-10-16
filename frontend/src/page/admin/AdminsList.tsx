@@ -56,7 +56,6 @@ export const AdminsList = (): ReactElement => {
   const popupPasswordRef = useRef("popup-password");
 
   const [isSpinner, setIsSpinner] = useState<boolean>(true);
-  const [currentAdmin, setCurrentAdmin] = useState<AdminInfoResponse>();
   const [admins, setAdmins] = useState<AdminInfoResponse[]>([]);
   const [isPopup, setIsPopup] = useState<boolean>(false);
   const [popupTitle, setPopupTitle] = useState<string>("");
@@ -73,10 +72,6 @@ export const AdminsList = (): ReactElement => {
   };
 
   useEffect(() => {
-    axios
-      .get(api.HOST + api.admin.authorisation.current)
-      .then((r: AxiosResponse<AdminInfoResponse>) => setCurrentAdmin(r.data))
-      .catch(alert);
     updateAdmins().finally(() => setIsSpinner(false));
   }, []);
 
@@ -165,7 +160,7 @@ export const AdminsList = (): ReactElement => {
 
   return (
     <>
-      <Header pages={pages} username={currentAdmin?.username} />
+      <Header pages={pages} />
       <Container>
         <Box display={"flex"} justifyContent={"space-between"}>
           <Typography variant={"h4"} m={2}>

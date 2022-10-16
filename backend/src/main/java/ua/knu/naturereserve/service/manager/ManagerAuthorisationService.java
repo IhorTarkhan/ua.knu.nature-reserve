@@ -1,4 +1,4 @@
-package ua.knu.naturereserve.service;
+package ua.knu.naturereserve.service.manager;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -6,6 +6,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.stereotype.Service;
 import ua.knu.naturereserve.dto.request.LoginRequest;
 import ua.knu.naturereserve.dto.response.JwtResponse;
+import ua.knu.naturereserve.dto.response.admin.CurrentAuthorisationInfoResponse;
 import ua.knu.naturereserve.entity.Manager;
 import ua.knu.naturereserve.exception.NotFoundException;
 import ua.knu.naturereserve.repository.ManagerRepository;
@@ -29,6 +30,15 @@ public class ManagerAuthorisationService {
             .orElseThrow(() -> new NotFoundException("Manager doesn't exists"));
     return JwtResponse.builder()
         .authorization(jwtTokenProvider.generateToken(manager.getId().toString()))
+        .build();
+  }
+
+  public CurrentAuthorisationInfoResponse getCurrent() {
+    var current = securityService.getCurrentManager();
+    return CurrentAuthorisationInfoResponse.builder()
+        .id(current.getId())
+        .username(current.getUsername())
+        .active(current.isEnabled())
         .build();
   }
 }

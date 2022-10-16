@@ -16,11 +16,13 @@ export const api = {
   manager: {
     authorisation: {
       login: "/manager/authorisation/login",
+      current: "/manager/authorisation/current",
     },
   },
   operator: {
     authorisation: {
       login: "/operator/authorisation/login",
+      current: "/operator/authorisation/current",
     },
   },
 };

@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ua.knu.naturereserve.dto.request.admin.AdminChangePasswordRequest;
 import ua.knu.naturereserve.dto.request.admin.CreateAdminRequest;
-import ua.knu.naturereserve.dto.response.admin.AdminInfoResponse;
+import ua.knu.naturereserve.dto.response.admin.CurrentAuthorisationInfoResponse;
 import ua.knu.naturereserve.service.admin.AdminManagementService;
 
 import java.util.List;
@@ -16,7 +16,7 @@ public class AdminManagementController {
   private final AdminManagementService service;
 
   @GetMapping("/")
-  public List<AdminInfoResponse> getAll() {
+  public List<CurrentAuthorisationInfoResponse> getAll() {
     return service.getAll();
   }
 

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ReactElement, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -14,15 +14,36 @@ import { Logo } from "./Logo";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { navigation } from "../constant/navigation";
+import { axios } from "../util/AxiosInterceptor";
+import { api } from "../constant/api";
+import { AxiosResponse } from "axios";
 
 interface Props {
   pages: { label: string; location: string }[];
-  username?: string;
 }
 
 export const Header = (props: Props): ReactElement => {
   const location = useLocation();
   const navigate = useNavigate();
+
+  const [username, setUsername] = useState<string | null>(null);
+
+  useEffect(() => {
+    [
+      { prefix: "/admin/", api: api.admin.authorisation.current },
+      { prefix: "/manager/", api: api.manager.authorisation.current },
+      { prefix: "/operator/", api: api.operator.authorisation.current },
+    ].forEach((x) => {
+      if (location.pathname.startsWith(x.prefix)) {
+        axios
+          .get(api.HOST + x.api)
+          .then((r: AxiosResponse<{ username: string }>) =>
+            setUsername(r.data.username)
+          )
+          .catch(alert);
+      }
+    });
+  }, []);
 
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
@@ -95,10 +116,10 @@ export const Header = (props: Props): ReactElement => {
             ))}
           </Box>
 
-          {props.username && (
+          {username && (
             <Box sx={{ display: "flex", alignItems: "center", flexGrow: 0 }}>
               <Typography mr={2} variant={"h6"}>
-                {props.username}
+                {username}
               </Typography>
               <Tooltip title={"Open settings"}>
                 <IconButton

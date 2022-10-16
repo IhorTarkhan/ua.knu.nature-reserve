@@ -1,13 +1,11 @@
-package ua.knu.naturereserve.controller;
+package ua.knu.naturereserve.controller.manager;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ua.knu.naturereserve.dto.request.LoginRequest;
 import ua.knu.naturereserve.dto.response.JwtResponse;
-import ua.knu.naturereserve.service.ManagerAuthorisationService;
+import ua.knu.naturereserve.dto.response.admin.CurrentAuthorisationInfoResponse;
+import ua.knu.naturereserve.service.manager.ManagerAuthorisationService;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,5 +16,10 @@ public class ManagerAuthorisationController {
   @PostMapping("/login")
   public JwtResponse login(@RequestBody LoginRequest request) {
     return service.login(request);
+  }
+
+  @GetMapping("/current")
+  public CurrentAuthorisationInfoResponse getCurrent() {
+    return service.getCurrent();
   }
 }

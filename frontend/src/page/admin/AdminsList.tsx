@@ -37,9 +37,9 @@ const AdminTableHead = (): ReactElement => {
   return (
     <TableHead>
       <TableRow>
-        <TableCell style={{ width: "20%" }}>ID</TableCell>
+        <TableCell style={{ width: "20%" }}>Id</TableCell>
         <TableCell>Username</TableCell>
-        <TableCell align={"right"}>Action</TableCell>
+        <TableCell align={"right"}>Actions</TableCell>
       </TableRow>
     </TableHead>
   );
@@ -157,6 +157,64 @@ export const AdminsList = (): ReactElement => {
     popupAccept();
   };
 
+  const ActiveTable = () => (
+    <TableContainer component={Paper}>
+      <Table>
+        <AdminTableHead />
+        <TableBody>
+          {admins
+            .filter((x) => x.active)
+            .map((row) => (
+              <TableRow key={row.id}>
+                <TableCell>{row.id}</TableCell>
+                <TableCell>{row.username}</TableCell>
+                <TableCell align={"right"}>
+                  <Tooltip title={"Reset password"}>
+                    <IconButton onClick={() => handleChangeAdminPassword(row)}>
+                      <KeyIcon fontSize={"large"} />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title={"Deactivate admin"}>
+                    <IconButton
+                      onClick={() => handleDeactivateAdmin(row)}
+                      disabled={row.id === 1}
+                    >
+                      <BlockIcon fontSize={"large"} />
+                    </IconButton>
+                  </Tooltip>
+                </TableCell>
+              </TableRow>
+            ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+
+  const DeactivateTable = () => (
+    <TableContainer component={Paper}>
+      <Table aria-label={"simple table"}>
+        <AdminTableHead />
+        <TableBody>
+          {admins
+            .filter((x) => !x.active)
+            .map((row) => (
+              <TableRow key={row.id}>
+                <TableCell>{row.id}</TableCell>
+                <TableCell>{row.username}</TableCell>
+                <TableCell align={"right"}>
+                  <Tooltip title={"Activate admin"}>
+                    <IconButton onClick={() => handleReactivateAdmin(row)}>
+                      <FaceIcon fontSize={"large"} />
+                    </IconButton>
+                  </Tooltip>
+                </TableCell>
+              </TableRow>
+            ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+
   return (
     <>
       <Header pages={pages} />
@@ -171,61 +229,16 @@ export const AdminsList = (): ReactElement => {
             </IconButton>
           </Tooltip>
         </Box>
-        <TableContainer component={Paper}>
-          <Table>
-            <AdminTableHead />
-            <TableBody>
-              {admins
-                .filter((x) => x.active)
-                .map((row) => (
-                  <TableRow key={row.id}>
-                    <TableCell>{row.id}</TableCell>
-                    <TableCell>{row.username}</TableCell>
-                    <TableCell align={"right"}>
-                      <Tooltip title={"Reset password"}>
-                        <IconButton
-                          onClick={() => handleChangeAdminPassword(row)}
-                        >
-                          <KeyIcon fontSize={"large"} />
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip title={"Deactivate admin"}>
-                        <IconButton onClick={() => handleDeactivateAdmin(row)}>
-                          <BlockIcon fontSize={"large"} />
-                        </IconButton>
-                      </Tooltip>
-                    </TableCell>
-                  </TableRow>
-                ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <ActiveTable />
 
-        <Typography variant={"h4"} m={2}>
-          Deactivated admins
-        </Typography>
-        <TableContainer component={Paper}>
-          <Table aria-label={"simple table"}>
-            <AdminTableHead />
-            <TableBody>
-              {admins
-                .filter((x) => !x.active)
-                .map((row) => (
-                  <TableRow key={row.id}>
-                    <TableCell>{row.id}</TableCell>
-                    <TableCell>{row.username}</TableCell>
-                    <TableCell align={"right"}>
-                      <Tooltip title={"Activate admin"}>
-                        <IconButton onClick={() => handleReactivateAdmin(row)}>
-                          <FaceIcon fontSize={"large"} />
-                        </IconButton>
-                      </Tooltip>
-                    </TableCell>
-                  </TableRow>
-                ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        {admins.filter((x) => !x.active).length === 0 || (
+          <>
+            <Typography variant={"h4"} m={2}>
+              Deactivated admins
+            </Typography>
+            <DeactivateTable />
+          </>
+        )}
       </Container>
 
       <Dialog open={isPopup} onClose={handleRejectPopup}>

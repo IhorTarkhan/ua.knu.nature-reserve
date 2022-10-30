@@ -34,6 +34,10 @@ export const api = {
     },
     animals: {
       getAll: "/manager/animals",
+      create: "/manager/animals",
+      sick: "/manager/animals/sick",
+      recover: "/manager/animals/recover",
+      die: "/manager/animals/die/",
     },
   },
   operator: {

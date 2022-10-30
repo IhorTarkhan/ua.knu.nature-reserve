@@ -24,12 +24,11 @@ import VolunteerActivismIcon from "@mui/icons-material/VolunteerActivism";
 import { fromFormatDate, toFormatDate } from "../../util/DateUtil";
 import AddIcon from "@mui/icons-material/Add";
 import Box from "@mui/material/Box";
+import { ManagerCreateAnimalRequest } from "../../dto/request/manager/ManagerCreateAnimalRequest";
+import { ManagerSickAnimalRequest } from "../../dto/request/manager/ManagerSickAnimalRequest";
+import { ManagerRecoverAnimalRequest } from "../../dto/request/manager/ManagerRecoverAnimalRequest";
 
-const pages = [
-  { label: "Animals", location: nav.manager.animals },
-  { label: "In dev", location: "/in-dev" },
-  { label: "In dev 2", location: "/in-dev-2" },
-];
+const pages = [{ label: "Animals", location: nav.manager.animals }];
 
 const ThisTableHead = (props: { withoutActions?: boolean }): ReactElement => (
   <TableHead>
@@ -102,15 +101,44 @@ export const ManagerAnimalsScreen = (): ReactElement => {
     if (!(nickname = window.prompt(`Enter nickname`))) return;
     if (!(lookup = window.prompt(`Enter lookup`))) return;
     if (!(behavioral = window.prompt(`Enter behavioral`))) return;
-    console.log("in dev:", nickname, lookup, behavioral);
+    const request: ManagerCreateAnimalRequest = {
+      nickname,
+      lookup,
+      behavioral,
+    };
+    axios
+      .post(api.HOST + api.manager.animals.create, request)
+      .then(updateAnimals)
+      .catch(alert);
   };
 
   const handleSick = (row: ManagerAnimalResponse) => {
     let date;
-    let reason;
+    let description;
     if (!(date = askDate(row))) return;
-    if (!(reason = window.prompt(`Enter illness description`))) return;
-    console.log("in dev:", date, reason);
+    if (!(description = window.prompt(`Enter illness description`))) return;
+    const request: ManagerSickAnimalRequest = {
+      id: row.id,
+      date,
+      description,
+    };
+    axios
+      .put(api.HOST + api.manager.animals.sick, request)
+      .then(updateAnimals)
+      .catch(alert);
+  };
+
+  const handleRecover = (row: ManagerAnimalResponse) => {
+    let date;
+    if (!(date = askDate(row))) return;
+    const request: ManagerRecoverAnimalRequest = {
+      id: row.id,
+      date,
+    };
+    axios
+      .put(api.HOST + api.manager.animals.recover, request)
+      .then(updateAnimals)
+      .catch(alert);
   };
 
   const handleDied = (row: ManagerAnimalResponse) => {
@@ -121,102 +149,101 @@ export const ManagerAnimalsScreen = (): ReactElement => {
     ) {
       return;
     }
-    console.log("in dev:");
-  };
-
-  const handleRecover = (row: ManagerAnimalResponse) => {
-    let date;
-    if (!(date = askDate(row))) return;
-    console.log("in dev:", date);
+    axios
+      .put(api.HOST + api.manager.animals.die + row.id)
+      .then(updateAnimals)
+      .catch(alert);
   };
 
   return (
     <>
       <Header pages={pages} />
       <Container>
-        <Box display={"flex"} justifyContent={"end"} m={2}>
-          <Tooltip title={"Create new"}>
-            <IconButton onClick={handleCreate}>
-              <AddIcon fontSize={"large"} />
-            </IconButton>
-          </Tooltip>
-        </Box>
+        <>
+          <Box display={"flex"} justifyContent={"end"} m={2}>
+            <Tooltip title={"Create new"}>
+              <IconButton onClick={handleCreate}>
+                <AddIcon fontSize={"large"} />
+              </IconButton>
+            </Tooltip>
+          </Box>
 
-        {availableList?.length === 0 || (
-          <>
-            <Typography variant={"h4"} m={2}>
-              Available animals
-            </Typography>
-            <TableContainer component={Paper}>
-              <Table>
-                <ThisTableHead />
-                <TableBody>
-                  {availableList?.map((row) => (
-                    <ThisTableRow key={row.id} row={row}>
-                      <Tooltip title={"Got sick"}>
-                        <IconButton onClick={() => handleSick(row)}>
-                          <SickIcon fontSize={"large"} />
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip title={"Died"}>
-                        <IconButton onClick={() => handleDied(row)}>
-                          <ImageIcon src={"/icons/scull.svg"} alt={"die"} />
-                        </IconButton>
-                      </Tooltip>
-                    </ThisTableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </>
-        )}
+          {availableList?.length === 0 || (
+            <>
+              <Typography variant={"h4"} m={2}>
+                Available animals
+              </Typography>
+              <TableContainer component={Paper}>
+                <Table>
+                  <ThisTableHead />
+                  <TableBody>
+                    {availableList?.map((row) => (
+                      <ThisTableRow key={row.id} row={row}>
+                        <Tooltip title={"Got sick"}>
+                          <IconButton onClick={() => handleSick(row)}>
+                            <SickIcon fontSize={"large"} />
+                          </IconButton>
+                        </Tooltip>
+                        <Tooltip title={"Died"}>
+                          <IconButton onClick={() => handleDied(row)}>
+                            <ImageIcon src={"/icons/scull.svg"} alt={"die"} />
+                          </IconButton>
+                        </Tooltip>
+                      </ThisTableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </>
+          )}
 
-        {sickList?.length === 0 || (
-          <>
-            <Typography variant={"h4"} m={2}>
-              Sick animals
-            </Typography>
-            <TableContainer component={Paper}>
-              <Table>
-                <ThisTableHead />
-                <TableBody>
-                  {sickList?.map((row) => (
-                    <ThisTableRow key={row.id} row={row}>
-                      <Tooltip title={"Recover"}>
-                        <IconButton onClick={() => handleRecover(row)}>
-                          <VolunteerActivismIcon fontSize={"large"} />
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip title={"Died"}>
-                        <IconButton onClick={() => handleDied(row)}>
-                          <ImageIcon src={"/icons/scull.svg"} alt={"die"} />
-                        </IconButton>
-                      </Tooltip>
-                    </ThisTableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </>
-        )}
+          {sickList?.length === 0 || (
+            <>
+              <Typography variant={"h4"} m={2}>
+                Sick animals
+              </Typography>
+              <TableContainer component={Paper}>
+                <Table>
+                  <ThisTableHead />
+                  <TableBody>
+                    {sickList?.map((row) => (
+                      <ThisTableRow key={row.id} row={row}>
+                        <Tooltip title={"Recover"}>
+                          <IconButton onClick={() => handleRecover(row)}>
+                            <VolunteerActivismIcon fontSize={"large"} />
+                          </IconButton>
+                        </Tooltip>
+                        <Tooltip title={"Died"}>
+                          <IconButton onClick={() => handleDied(row)}>
+                            <ImageIcon src={"/icons/scull.svg"} alt={"die"} />
+                          </IconButton>
+                        </Tooltip>
+                      </ThisTableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </>
+          )}
 
-        {diedList?.length === 0 || (
-          <>
-            <Typography variant={"h4"} m={2}>
-              Dies animals
-            </Typography>
-            <TableContainer component={Paper}>
-              <Table>
-                <ThisTableHead withoutActions />
-                <TableBody>
-                  {diedList?.map((row) => (
-                    <ThisTableRow key={row.id} row={row} />
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </>
-        )}
+          {diedList?.length === 0 || (
+            <>
+              <Typography variant={"h4"} m={2}>
+                Dies animals
+              </Typography>
+              <TableContainer component={Paper}>
+                <Table>
+                  <ThisTableHead withoutActions />
+                  <TableBody>
+                    {diedList?.map((row) => (
+                      <ThisTableRow key={row.id} row={row} />
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </>
+          )}
+        </>
       </Container>
 
       {isSpinner && <SpinnerFullScreen />}

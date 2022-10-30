@@ -15,7 +15,7 @@ import ua.knu.naturereserve.repository.ManagerRepository;
 import ua.knu.naturereserve.repository.OperatorRepository;
 
 import javax.annotation.PostConstruct;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @Component
@@ -55,7 +55,7 @@ public class SetUp {
         AnimalIllness.builder()
             .animal(animals.get(0))
             .description("chickenpox")
-            .start(LocalDateTime.now())
+            .start(LocalDate.now())
             .build());
   }
 }

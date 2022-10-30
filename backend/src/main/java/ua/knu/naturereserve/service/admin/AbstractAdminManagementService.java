@@ -62,7 +62,9 @@ public abstract class AbstractAdminManagementService<T extends ManagedByAdmin> {
   }
 
   private T getAdmin(Long id) {
-    return repository.findById(id).orElseThrow(() -> new NotFoundException("Admin doesn't exists"));
+    return repository
+        .findById(id)
+        .orElseThrow(() -> new NotFoundException("Admin doesn't exists with id " + id));
   }
 
   public void create(CreateAdminRequest request) {

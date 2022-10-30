@@ -16,7 +16,7 @@ import java.util.Collections;
 @NoArgsConstructor
 @Builder
 @Table(name = "operator")
-public class Operator implements UserDetails {
+public class Operator implements UserDetails, ManagedByAdmin {
   public static final String ROLE = "OPERATOR";
 
   @Id

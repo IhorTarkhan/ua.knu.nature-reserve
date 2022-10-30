@@ -2,7 +2,9 @@ export const nav = {
   home: "/",
   admin: {
     login: "/admin/login",
-    admins: "/admin/home",
+    admins: "/admin/admins",
+    managers: "/admin/managers",
+    operators: "/admin/operators",
   },
   manager: {
     login: "/manager/login",

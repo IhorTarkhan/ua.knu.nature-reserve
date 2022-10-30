@@ -1,6 +1,6 @@
 import * as React from "react";
 import { ReactElement, useEffect, useRef, useState } from "react";
-import { Header } from "../../component/Header";
+import { Header } from "../Header";
 import { nav } from "../../constant/nav";
 import { AdminInfoResponse } from "../../dto/response/admin/AdminInfoResponse";
 import { axios } from "../../util/AxiosInterceptor";
@@ -27,13 +27,13 @@ import KeyIcon from "@mui/icons-material/Key";
 import BlockIcon from "@mui/icons-material/Block";
 import AddIcon from "@mui/icons-material/Add";
 import FaceIcon from "@mui/icons-material/Face";
-import { SpinnerFullScreen } from "../../component/SpinnerFullScreen";
+import { SpinnerFullScreen } from "../SpinnerFullScreen";
 import { AdminChangePasswordRequest } from "../../dto/request/admin/AdminChangePasswordRequest";
 import Box from "@mui/material/Box";
-import { CreateNewAdminPopup } from "../../component/admin/CreateNewAdminPopup";
+import { CreateNewPopup } from "./CreateNewPopup";
 import { CreateAdminRequest } from "../../dto/request/admin/CreateAdminRequest";
 
-const AdminTableHead = (): ReactElement => {
+const MyTableHead = (): ReactElement => {
   return (
     <TableHead>
       <TableRow>
@@ -46,16 +46,27 @@ const AdminTableHead = (): ReactElement => {
 };
 
 const pages = [
-  { label: "Home", location: nav.admin.admins },
-  { label: "Pricing", location: "/admin/pricing" },
-  { label: "Blog", location: "/admin/blog" },
+  { label: "Admins", location: nav.admin.admins },
+  { label: "Managers", location: nav.admin.managers },
+  { label: "Operators", location: nav.admin.operators },
 ];
 
-export const AdminsList = (): ReactElement => {
+interface Props {
+  url: {
+    getAll: string;
+    changePassword: string;
+    deactivate: string;
+    reactivate: string;
+    create: string;
+  };
+  title: string;
+}
+
+export const UsersList = (props: Props): ReactElement => {
   const popupPasswordRef = useRef("popup-password");
 
   const [isSpinner, setIsSpinner] = useState<boolean>(true);
-  const [admins, setAdmins] = useState<AdminInfoResponse[]>([]);
+  const [users, setUsers] = useState<AdminInfoResponse[]>([]);
   const [isPopup, setIsPopup] = useState<boolean>(false);
   const [popupTitle, setPopupTitle] = useState<string>("");
   const [popupContent, setPopupContent] = useState<ReactElement>(<></>);
@@ -63,24 +74,24 @@ export const AdminsList = (): ReactElement => {
 
   const [createPopup, setCreatePopup] = useState<boolean>(false);
 
-  const updateAdmins = () => {
+  const updateUsers = () => {
     return axios
-      .get(api.HOST + api.admin.admins.getAll)
-      .then((r: AxiosResponse<AdminInfoResponse[]>) => setAdmins(r.data))
+      .get(api.HOST + props.url.getAll)
+      .then((r: AxiosResponse<AdminInfoResponse[]>) => setUsers(r.data))
       .catch(alert);
   };
 
   useEffect(() => {
-    updateAdmins().finally(() => setIsSpinner(false));
+    updateUsers().finally(() => setIsSpinner(false));
   }, []);
 
   const openPopup = () => {
     setIsPopup(true);
   };
 
-  const handleChangeAdminPassword = (admin: AdminInfoResponse) => {
+  const handleChangePassword = (user: AdminInfoResponse) => {
     setPopupTitle(
-      `Do you want to change password to admin "${admin.username} (${admin.id})"?`
+      `Do you want to change password to ${props.title} "${user.username} (${user.id})"?`
     );
     setPopupContent(
       <TextField
@@ -94,54 +105,54 @@ export const AdminsList = (): ReactElement => {
       // @ts-ignore
       const newPassword = popupPasswordRef.current.value;
       const request: AdminChangePasswordRequest = {
-        id: admin.id,
+        id: user.id,
         newPassword: newPassword,
       };
       setIsSpinner(true);
       axios
-        .put(api.HOST + api.admin.admins.changePassword, request)
-        .then(updateAdmins)
+        .put(api.HOST + props.url.changePassword, request)
+        .then(updateUsers)
         .catch(alert)
         .finally(() => setIsSpinner(false));
     });
     openPopup();
   };
 
-  const handleDeactivateAdmin = (admin: AdminInfoResponse) => {
+  const handleDeactivate = (user: AdminInfoResponse) => {
     setPopupTitle(
-      `Do you want to deactivate admin "${admin.username} (${admin.id})"?`
+      `Do you want to deactivate ${props.title} "${user.username} (${user.id})"?`
     );
     setPopupContent(<></>);
     setPopupAccept(() => () => {
       axios
-        .put(api.HOST + api.admin.admins.deactivate + admin.id)
-        .then(updateAdmins)
+        .put(api.HOST + props.url.deactivate + user.id)
+        .then(updateUsers)
         .catch(alert)
         .finally(() => setIsSpinner(false));
     });
     openPopup();
   };
 
-  const handleReactivateAdmin = (admin: AdminInfoResponse) => {
+  const handleReactivate = (user: AdminInfoResponse) => {
     setPopupTitle(
-      `Do you want to reactivate admin "${admin.username} (${admin.id})"?`
+      `Do you want to reactivate ${props.title} "${user.username} (${user.id})"?`
     );
     setPopupContent(<></>);
     setPopupAccept(() => () => {
       axios
-        .put(api.HOST + api.admin.admins.reactivate + admin.id)
-        .then(updateAdmins)
+        .put(api.HOST + props.url.reactivate + user.id)
+        .then(updateUsers)
         .catch(alert)
         .finally(() => setIsSpinner(false));
     });
     openPopup();
   };
 
-  const handleCreateAdmin = (admin?: CreateAdminRequest) => {
-    if (admin) {
+  const handleCreate = (user?: CreateAdminRequest) => {
+    if (user) {
       axios
-        .post(api.HOST + api.admin.admins.create, admin)
-        .then(updateAdmins)
+        .post(api.HOST + props.url.create, user)
+        .then(updateUsers)
         .catch(alert)
         .finally(() => setIsSpinner(false));
     }
@@ -160,9 +171,9 @@ export const AdminsList = (): ReactElement => {
   const ActiveTable = () => (
     <TableContainer component={Paper}>
       <Table>
-        <AdminTableHead />
+        <MyTableHead />
         <TableBody>
-          {admins
+          {users
             .filter((x) => x.active)
             .map((row) => (
               <TableRow key={row.id}>
@@ -170,17 +181,24 @@ export const AdminsList = (): ReactElement => {
                 <TableCell>{row.username}</TableCell>
                 <TableCell align={"right"}>
                   <Tooltip title={"Reset password"}>
-                    <IconButton onClick={() => handleChangeAdminPassword(row)}>
-                      <KeyIcon fontSize={"large"} />
-                    </IconButton>
+                    <span>
+                      <IconButton
+                        onClick={() => handleChangePassword(row)}
+                        disabled={row.id === 1}
+                      >
+                        <KeyIcon fontSize={"large"} />
+                      </IconButton>
+                    </span>
                   </Tooltip>
-                  <Tooltip title={"Deactivate admin"}>
-                    <IconButton
-                      onClick={() => handleDeactivateAdmin(row)}
-                      disabled={row.id === 1}
-                    >
-                      <BlockIcon fontSize={"large"} />
-                    </IconButton>
+                  <Tooltip title={"Deactivate"}>
+                    <span>
+                      <IconButton
+                        onClick={() => handleDeactivate(row)}
+                        disabled={row.id === 1}
+                      >
+                        <BlockIcon fontSize={"large"} />
+                      </IconButton>
+                    </span>
                   </Tooltip>
                 </TableCell>
               </TableRow>
@@ -193,17 +211,17 @@ export const AdminsList = (): ReactElement => {
   const DeactivateTable = () => (
     <TableContainer component={Paper}>
       <Table aria-label={"simple table"}>
-        <AdminTableHead />
+        <MyTableHead />
         <TableBody>
-          {admins
+          {users
             .filter((x) => !x.active)
             .map((row) => (
               <TableRow key={row.id}>
                 <TableCell>{row.id}</TableCell>
                 <TableCell>{row.username}</TableCell>
                 <TableCell align={"right"}>
-                  <Tooltip title={"Activate admin"}>
-                    <IconButton onClick={() => handleReactivateAdmin(row)}>
+                  <Tooltip title={"Reactivate"}>
+                    <IconButton onClick={() => handleReactivate(row)}>
                       <FaceIcon fontSize={"large"} />
                     </IconButton>
                   </Tooltip>
@@ -219,26 +237,28 @@ export const AdminsList = (): ReactElement => {
     <>
       <Header pages={pages} />
       <Container>
-        <Box display={"flex"} justifyContent={"space-between"}>
-          <Typography variant={"h4"} m={2}>
-            Admins
-          </Typography>
-          <Tooltip title={"Create new Admin"} sx={{ my: "auto" }}>
-            <IconButton onClick={() => setCreatePopup(true)}>
-              <AddIcon fontSize={"large"} />
-            </IconButton>
-          </Tooltip>
-        </Box>
-        <ActiveTable />
-
-        {admins.filter((x) => !x.active).length === 0 || (
-          <>
+        <>
+          <Box display={"flex"} justifyContent={"space-between"}>
             <Typography variant={"h4"} m={2}>
-              Deactivated admins
+              {props.title}s
             </Typography>
-            <DeactivateTable />
-          </>
-        )}
+            <Tooltip title={"Create new"} sx={{ my: "auto" }}>
+              <IconButton onClick={() => setCreatePopup(true)}>
+                <AddIcon fontSize={"large"} />
+              </IconButton>
+            </Tooltip>
+          </Box>
+          <ActiveTable />
+
+          {users.filter((x) => !x.active).length === 0 || (
+            <>
+              <Typography variant={"h4"} m={2}>
+                Deactivated
+              </Typography>
+              <DeactivateTable />
+            </>
+          )}
+        </>
       </Container>
 
       <Dialog open={isPopup} onClose={handleRejectPopup}>
@@ -252,7 +272,7 @@ export const AdminsList = (): ReactElement => {
         </DialogActions>
       </Dialog>
 
-      <CreateNewAdminPopup isPopup={createPopup} close={handleCreateAdmin} />
+      <CreateNewPopup isPopup={createPopup} close={handleCreate} />
 
       {isSpinner && <SpinnerFullScreen />}
     </>

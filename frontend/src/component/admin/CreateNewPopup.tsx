@@ -13,7 +13,7 @@ interface Props {
   close: (x?: CreateAdminRequest) => void;
 }
 
-export const CreateNewAdminPopup = (props: Props): ReactElement => {
+export const CreateNewPopup = (props: Props): ReactElement => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 

@@ -12,6 +12,20 @@ export const api = {
       reactivate: "/admin/admins/reactivate/",
       create: "/admin/admins/",
     },
+    managers: {
+      getAll: "/admin/managers/",
+      changePassword: "/admin/managers/change-password",
+      deactivate: "/admin/managers/deactivate/",
+      reactivate: "/admin/managers/reactivate/",
+      create: "/admin/managers/",
+    },
+    operators: {
+      getAll: "/admin/operators/",
+      changePassword: "/admin/operators/change-password",
+      deactivate: "/admin/operators/deactivate/",
+      reactivate: "/admin/operators/reactivate/",
+      create: "/admin/operators/",
+    },
   },
   manager: {
     authorisation: {

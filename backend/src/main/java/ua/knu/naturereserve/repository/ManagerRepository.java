@@ -5,6 +5,7 @@ import ua.knu.naturereserve.entity.Manager;
 
 import java.util.Optional;
 
-public interface ManagerRepository extends JpaRepository<Manager, Long> {
+public interface ManagerRepository
+    extends JpaRepository<Manager, Long>, ManagedByAdminRepository<Manager> {
   Optional<Manager> findByUsername(String username);
 }

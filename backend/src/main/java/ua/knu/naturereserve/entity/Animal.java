@@ -28,9 +28,6 @@ public class Animal {
   @Column(name = "behavioral", nullable = false)
   private String behavioral;
 
-  @Column(name = "is_migration", nullable = false)
-  private boolean isMigration;
-
   @Builder.Default
   @Column(name = "is_alive", nullable = false)
   private boolean isAlive = true;

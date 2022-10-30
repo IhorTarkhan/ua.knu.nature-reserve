@@ -62,7 +62,6 @@ export const ManagerAnimalsScreen = (): ReactElement => {
                 <TableCell>Nickname</TableCell>
                 <TableCell>Lookup</TableCell>
                 <TableCell>Behavioral</TableCell>
-                <TableCell align={"center"}>Migration</TableCell>
                 <TableCell align={"center"}>Alive</TableCell>
                 <TableCell align={"center"}>Is illness now</TableCell>
                 <TableCell align={"center"}>Actions</TableCell>
@@ -75,9 +74,6 @@ export const ManagerAnimalsScreen = (): ReactElement => {
                   <TableCell>{row.nickname}</TableCell>
                   <TableCell>{row.lookup}</TableCell>
                   <TableCell>{row.behavioral}</TableCell>
-                  <TableCell align={"center"}>
-                    {row.migration ? <AddIcon /> : <RemoveIcon />}
-                  </TableCell>
                   <TableCell align={"center"}>
                     {row.alive ? <AddIcon /> : <RemoveIcon />}
                   </TableCell>

@@ -27,7 +27,6 @@ public class AnimalService {
                   .nickname(animal.getNickname())
                   .lookup(animal.getLookup())
                   .behavioral(animal.getBehavioral())
-                  .isMigration(animal.isMigration())
                   .isAlive(animal.isAlive())
                   .isIllnessNow(isIllnessNow)
                   .build();

@@ -14,7 +14,6 @@ public class AnimalViewInListResponse {
   private String nickname;
   private String lookup;
   private String behavioral;
-  private boolean isMigration;
   private boolean isAlive;
   private boolean isIllnessNow;
 }

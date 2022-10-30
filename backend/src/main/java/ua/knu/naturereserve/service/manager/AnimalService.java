@@ -2,7 +2,7 @@ package ua.knu.naturereserve.service.manager;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ua.knu.naturereserve.dto.response.manager.AnimalViewInListResponse;
+import ua.knu.naturereserve.dto.response.manager.ManagerAnimalResponse;
 import ua.knu.naturereserve.entity.AnimalIllness;
 import ua.knu.naturereserve.repository.AnimalRepository;
 
@@ -14,21 +14,21 @@ import java.util.Objects;
 public class AnimalService {
   private final AnimalRepository animalRepository;
 
-  public List<AnimalViewInListResponse> getAll() {
+  public List<ManagerAnimalResponse> getAll() {
     return animalRepository.findByOrderById().stream()
         .map(
             animal -> {
-              var isIllnessNow =
-                  animal.getIllnesses().stream()
-                      .map(AnimalIllness::getEnd)
-                      .anyMatch(Objects::isNull);
-              return AnimalViewInListResponse.builder()
+              var isHealthy =
+                      animal.getIllnesses().stream()
+                          .map(AnimalIllness::getEnd)
+                          .noneMatch(Objects::isNull);
+              return ManagerAnimalResponse.builder()
                   .id(animal.getId())
                   .nickname(animal.getNickname())
                   .lookup(animal.getLookup())
                   .behavioral(animal.getBehavioral())
                   .isAlive(animal.isAlive())
-                  .isIllnessNow(isIllnessNow)
+                  .isHealthy(isHealthy)
                   .build();
             })
         .toList();

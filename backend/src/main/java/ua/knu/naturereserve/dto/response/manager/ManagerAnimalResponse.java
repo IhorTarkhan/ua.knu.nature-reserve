@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AnimalViewInListResponse {
+public class ManagerAnimalResponse {
   private Long id;
   private String nickname;
   private String lookup;
   private String behavioral;
   private boolean isAlive;
-  private boolean isIllnessNow;
+  private boolean isHealthy;
 }

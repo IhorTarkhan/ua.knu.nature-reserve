@@ -22,6 +22,8 @@ import { ImageIcon } from "../../component/ImageIcon";
 import SickIcon from "@mui/icons-material/Sick";
 import VolunteerActivismIcon from "@mui/icons-material/VolunteerActivism";
 import { fromFormatDate, toFormatDate } from "../../util/DateUtil";
+import AddIcon from "@mui/icons-material/Add";
+import Box from "@mui/material/Box";
 
 const pages = [
   { label: "Animals", location: nav.manager.animals },
@@ -93,6 +95,16 @@ export const ManagerAnimalsScreen = (): ReactElement => {
     return toFormatDate(parsedDate);
   };
 
+  const handleCreate = () => {
+    let nickname;
+    let lookup;
+    let behavioral;
+    if (!(nickname = window.prompt(`Enter nickname`))) return;
+    if (!(lookup = window.prompt(`Enter lookup`))) return;
+    if (!(behavioral = window.prompt(`Enter behavioral`))) return;
+    console.log("in dev:", nickname, lookup, behavioral);
+  };
+
   const handleSick = (row: ManagerAnimalResponse) => {
     let date;
     let reason;
@@ -122,6 +134,14 @@ export const ManagerAnimalsScreen = (): ReactElement => {
     <>
       <Header pages={pages} />
       <Container>
+        <Box display={"flex"} justifyContent={"end"} m={2}>
+          <Tooltip title={"Create new"}>
+            <IconButton onClick={handleCreate}>
+              <AddIcon fontSize={"large"} />
+            </IconButton>
+          </Tooltip>
+        </Box>
+
         {availableList?.length === 0 || (
           <>
             <Typography variant={"h4"} m={2}>

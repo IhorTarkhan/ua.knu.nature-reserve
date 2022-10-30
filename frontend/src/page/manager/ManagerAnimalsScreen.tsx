@@ -17,10 +17,10 @@ import { SpinnerFullScreen } from "../../component/SpinnerFullScreen";
 import { ManagerAnimalResponse } from "../../dto/response/manager/ManagerAnimalResponse";
 import Typography from "@mui/material/Typography";
 import CoronavirusIcon from "@mui/icons-material/Coronavirus";
-import MilitaryTechIcon from "@mui/icons-material/MilitaryTech";
 import DoNotDisturbIcon from "@mui/icons-material/DoNotDisturb";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
+import { ImageIcon } from "../../component/ImageIcon";
 
 const pages = [
   { label: "Animals", location: nav.manager.animals },
@@ -83,7 +83,7 @@ export const ManagerAnimalsScreen = (): ReactElement => {
                     </Tooltip>
                     <Tooltip title={"Died"}>
                       <IconButton onClick={() => alert(2)}>
-                        <MilitaryTechIcon fontSize={"large"} />
+                        <ImageIcon src={"/icons/scull.svg"} alt={"die"} />
                       </IconButton>
                     </Tooltip>
                     <Tooltip title={"Disable"}>

@@ -79,7 +79,13 @@ export const Header = (props: Props): ReactElement => {
               sx={{ display: { xs: "block", md: "none" } }}
             >
               {props.pages.map((page) => (
-                <MenuItem key={page.label} onClick={() => setAnchorElNav(null)}>
+                <MenuItem
+                  key={page.label}
+                  onClick={() => {
+                    setAnchorElNav(null);
+                    navigate(page.location);
+                  }}
+                >
                   <Typography textAlign={"center"}>{page.label}</Typography>
                 </MenuItem>
               ))}

@@ -1,4 +1,4 @@
-package ua.knu.naturereserve.dto.response.manager;
+package ua.knu.naturereserve.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ManagerAnimalResponse {
+public class AnimalInfoResponse {
   private Long id;
   private String nickname;
   private String lookup;

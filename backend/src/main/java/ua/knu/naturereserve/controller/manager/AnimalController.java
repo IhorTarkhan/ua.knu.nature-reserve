@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ua.knu.naturereserve.dto.request.manager.ManagerCreateAnimalRequest;
 import ua.knu.naturereserve.dto.request.manager.ManagerRecoverAnimalRequest;
 import ua.knu.naturereserve.dto.request.manager.ManagerSickAnimalRequest;
-import ua.knu.naturereserve.dto.response.manager.ManagerAnimalResponse;
+import ua.knu.naturereserve.dto.response.AnimalInfoResponse;
 import ua.knu.naturereserve.service.manager.AnimalService;
 
 import java.util.List;
@@ -23,7 +23,7 @@ public class AnimalController {
   private final AnimalService service;
 
   @GetMapping
-  public List<ManagerAnimalResponse> getAll() {
+  public List<AnimalInfoResponse> getAll() {
     return service.getAll();
   }
 

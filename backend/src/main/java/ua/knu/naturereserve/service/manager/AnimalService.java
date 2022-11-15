@@ -6,40 +6,25 @@ import org.springframework.transaction.annotation.Transactional;
 import ua.knu.naturereserve.dto.request.manager.ManagerCreateAnimalRequest;
 import ua.knu.naturereserve.dto.request.manager.ManagerRecoverAnimalRequest;
 import ua.knu.naturereserve.dto.request.manager.ManagerSickAnimalRequest;
-import ua.knu.naturereserve.dto.response.manager.ManagerAnimalResponse;
+import ua.knu.naturereserve.dto.response.AnimalInfoResponse;
 import ua.knu.naturereserve.entity.Animal;
 import ua.knu.naturereserve.entity.AnimalIllness;
 import ua.knu.naturereserve.exception.NotFoundException;
+import ua.knu.naturereserve.mapper.AnimalMapper;
 import ua.knu.naturereserve.repository.AnimalIllnessRepository;
 import ua.knu.naturereserve.repository.AnimalRepository;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
 public class AnimalService {
   private final AnimalRepository animalRepository;
   private final AnimalIllnessRepository illnessRepository;
+  private final AnimalMapper mapper;
 
-  public List<ManagerAnimalResponse> getAll() {
-    return animalRepository.findByOrderById().stream()
-        .map(
-            animal -> {
-              var isHealthy =
-                  animal.getIllnesses().stream()
-                      .map(AnimalIllness::getEnd)
-                      .noneMatch(Objects::isNull);
-              return ManagerAnimalResponse.builder()
-                  .id(animal.getId())
-                  .nickname(animal.getNickname())
-                  .lookup(animal.getLookup())
-                  .behavioral(animal.getBehavioral())
-                  .isAlive(animal.isAlive())
-                  .isHealthy(isHealthy)
-                  .build();
-            })
-        .toList();
+  public List<AnimalInfoResponse> getAll() {
+    return animalRepository.findByOrderById().stream().map(mapper::toDtoResponse).toList();
   }
 
   public void create(ManagerCreateAnimalRequest request) {

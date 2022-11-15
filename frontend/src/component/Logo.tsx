@@ -3,7 +3,11 @@ import { ReactElement } from "react";
 import Typography from "@mui/material/Typography";
 import AdbIcon from "@mui/icons-material/Adb";
 
-export const Logo = (): ReactElement => {
+interface Props {
+  href?: string;
+}
+
+export const Logo = (props: Props): ReactElement => {
   return (
     <>
       <AdbIcon sx={{ mr: 1 }} />
@@ -11,7 +15,7 @@ export const Logo = (): ReactElement => {
         variant={"h6"}
         noWrap
         component={"a"}
-        href={"/"}
+        href={props.href || "/"}
         sx={{
           mr: 2,
           flexGrow: 1,

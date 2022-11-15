@@ -235,12 +235,12 @@ export const UsersList = (props: Props): ReactElement => {
 
   return (
     <>
-      <Header pages={pages} />
+      <Header pages={pages} home={nav.admin.admins} logout={nav.staff} />
       <Container>
         <>
           <Box display={"flex"} justifyContent={"space-between"}>
             <Typography variant={"h4"} m={2}>
-              {props.title}s
+              {props.title.charAt(0).toUpperCase() + props.title.slice(1)}s
             </Typography>
             <Tooltip title={"Create new"} sx={{ my: "auto" }}>
               <IconButton onClick={() => setCreatePopup(true)}>

@@ -20,6 +20,8 @@ import { AxiosResponse } from "axios";
 
 interface Props {
   pages: { label: string; location: string }[];
+  home?: string;
+  logout?: string;
 }
 
 export const Header = (props: Props): ReactElement => {
@@ -55,7 +57,7 @@ export const Header = (props: Props): ReactElement => {
           <Box
             sx={{ alignItems: "center", display: { xs: "none", md: "flex" } }}
           >
-            <Logo />
+            <Logo href={props.home} />
           </Box>
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
@@ -99,7 +101,7 @@ export const Header = (props: Props): ReactElement => {
               flexGrow: 1,
             }}
           >
-            <Logo />
+            <Logo href={props.home} />
           </Box>
 
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
@@ -151,7 +153,7 @@ export const Header = (props: Props): ReactElement => {
                 <MenuItem
                   onClick={() => {
                     setAnchorElUser(null);
-                    navigate(nav.home);
+                    navigate(props.logout || nav.home);
                   }}
                 >
                   <Typography textAlign={"center"}>Logout</Typography>

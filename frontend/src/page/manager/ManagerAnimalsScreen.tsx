@@ -157,7 +157,7 @@ export const ManagerAnimalsScreen = (): ReactElement => {
 
   return (
     <>
-      <Header pages={pages} />
+      <Header pages={pages} home={nav.manager.animals} logout={nav.staff} />
       <Container>
         <>
           <Box display={"flex"} justifyContent={"end"} m={2}>

@@ -1,5 +1,6 @@
 export const nav = {
   home: "/",
+  staff: "/staff",
   admin: {
     login: "/admin/login",
     admins: "/admin/admins",

@@ -2,7 +2,7 @@ import React, { ReactElement } from "react";
 import { Link } from "react-router-dom";
 import { nav } from "../constant/nav";
 
-export const Home = (): ReactElement => {
+export const StaffHome = (): ReactElement => {
   return (
     <>
       <nav>
@@ -18,7 +18,6 @@ export const Home = (): ReactElement => {
           </li>
         </ul>
       </nav>
-      <h2>Home</h2>
     </>
   );
 };

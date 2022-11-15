@@ -38,7 +38,7 @@ export const Header = (props: Props): ReactElement => {
     ].forEach((x) => {
       if (location.pathname.startsWith(x.prefix)) {
         axios
-          .get(api.HOST + x.api)
+          .get(x.api)
           .then((r: AxiosResponse<{ username: string }>) =>
             setUsername(r.data.username)
           )

@@ -14,7 +14,7 @@ import { axios } from "../../util/AxiosInterceptor";
 import { api } from "../../constant/api";
 import { AxiosResponse } from "axios";
 import { SpinnerFullScreen } from "../../component/SpinnerFullScreen";
-import { ManagerAnimalResponse } from "../../dto/response/manager/ManagerAnimalResponse";
+import { AnimalInfoResponse } from "../../dto/response/AnimalInfoResponse";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
@@ -45,7 +45,7 @@ const ThisTableHead = (props: { withoutActions?: boolean }): ReactElement => (
 );
 
 interface ThisTableRowProps {
-  row: ManagerAnimalResponse;
+  row: AnimalInfoResponse;
   children?: ReactElement | ReactElement[];
 }
 
@@ -61,14 +61,14 @@ const ThisTableRow = ({ row, children }: ThisTableRowProps): ReactElement => (
 
 export const ManagerAnimalsScreen = (): ReactElement => {
   const [isSpinner, setIsSpinner] = useState<boolean>(true);
-  const [availableList, setAvailableList] = useState<ManagerAnimalResponse[]>();
-  const [sickList, setSickList] = useState<ManagerAnimalResponse[]>();
-  const [diedList, setDiedList] = useState<ManagerAnimalResponse[]>();
+  const [availableList, setAvailableList] = useState<AnimalInfoResponse[]>();
+  const [sickList, setSickList] = useState<AnimalInfoResponse[]>();
+  const [diedList, setDiedList] = useState<AnimalInfoResponse[]>();
 
   const updateAnimals = () => {
     return axios
-      .get(api.HOST + api.manager.animals.getAll)
-      .then((r: AxiosResponse<ManagerAnimalResponse[]>) => {
+      .get(api.manager.animals.getAll)
+      .then((r: AxiosResponse<AnimalInfoResponse[]>) => {
         let alive = r.data.filter((x) => x.alive);
         setAvailableList(alive.filter((x) => x.healthy));
         setSickList(alive.filter((x) => !x.healthy));
@@ -81,7 +81,7 @@ export const ManagerAnimalsScreen = (): ReactElement => {
     updateAnimals().finally(() => setIsSpinner(false));
   }, []);
 
-  const askDate = (row: ManagerAnimalResponse): string | void => {
+  const askDate = (row: AnimalInfoResponse): string | void => {
     const dateString = window.prompt(
       `Animal "${row.nickname}" (with id=${row.id})\n    Enter date in format yyyy-mm-dd`,
       toFormatDate(new Date())
@@ -107,12 +107,12 @@ export const ManagerAnimalsScreen = (): ReactElement => {
       behavioral,
     };
     axios
-      .post(api.HOST + api.manager.animals.create, request)
+      .post(api.manager.animals.create, request)
       .then(updateAnimals)
       .catch(alert);
   };
 
-  const handleSick = (row: ManagerAnimalResponse) => {
+  const handleSick = (row: AnimalInfoResponse) => {
     let date;
     let description;
     if (!(date = askDate(row))) return;
@@ -123,12 +123,12 @@ export const ManagerAnimalsScreen = (): ReactElement => {
       description,
     };
     axios
-      .put(api.HOST + api.manager.animals.sick, request)
+      .put(api.manager.animals.sick, request)
       .then(updateAnimals)
       .catch(alert);
   };
 
-  const handleRecover = (row: ManagerAnimalResponse) => {
+  const handleRecover = (row: AnimalInfoResponse) => {
     let date;
     if (!(date = askDate(row))) return;
     const request: ManagerRecoverAnimalRequest = {
@@ -136,12 +136,12 @@ export const ManagerAnimalsScreen = (): ReactElement => {
       date,
     };
     axios
-      .put(api.HOST + api.manager.animals.recover, request)
+      .put(api.manager.animals.recover, request)
       .then(updateAnimals)
       .catch(alert);
   };
 
-  const handleDied = (row: ManagerAnimalResponse) => {
+  const handleDied = (row: AnimalInfoResponse) => {
     if (
       !window.confirm(
         `Mark animal "${row.nickname}" (with id=${row.id}) as dead?`
@@ -150,7 +150,7 @@ export const ManagerAnimalsScreen = (): ReactElement => {
       return;
     }
     axios
-      .put(api.HOST + api.manager.animals.die + row.id)
+      .put(api.manager.animals.die + row.id)
       .then(updateAnimals)
       .catch(alert);
   };

@@ -4,7 +4,6 @@ import { Header } from "../Header";
 import { nav } from "../../constant/nav";
 import { AdminInfoResponse } from "../../dto/response/admin/AdminInfoResponse";
 import { axios } from "../../util/AxiosInterceptor";
-import { api } from "../../constant/api";
 import { AxiosResponse } from "axios";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -76,7 +75,7 @@ export const UsersList = (props: Props): ReactElement => {
 
   const updateUsers = () => {
     return axios
-      .get(api.HOST + props.url.getAll)
+      .get(props.url.getAll)
       .then((r: AxiosResponse<AdminInfoResponse[]>) => setUsers(r.data))
       .catch(alert);
   };
@@ -110,7 +109,7 @@ export const UsersList = (props: Props): ReactElement => {
       };
       setIsSpinner(true);
       axios
-        .put(api.HOST + props.url.changePassword, request)
+        .put(props.url.changePassword, request)
         .then(updateUsers)
         .catch(alert)
         .finally(() => setIsSpinner(false));
@@ -125,7 +124,7 @@ export const UsersList = (props: Props): ReactElement => {
     setPopupContent(<></>);
     setPopupAccept(() => () => {
       axios
-        .put(api.HOST + props.url.deactivate + user.id)
+        .put(props.url.deactivate + user.id)
         .then(updateUsers)
         .catch(alert)
         .finally(() => setIsSpinner(false));
@@ -140,7 +139,7 @@ export const UsersList = (props: Props): ReactElement => {
     setPopupContent(<></>);
     setPopupAccept(() => () => {
       axios
-        .put(api.HOST + props.url.reactivate + user.id)
+        .put(props.url.reactivate + user.id)
         .then(updateUsers)
         .catch(alert)
         .finally(() => setIsSpinner(false));
@@ -151,7 +150,7 @@ export const UsersList = (props: Props): ReactElement => {
   const handleCreate = (user?: CreateAdminRequest) => {
     if (user) {
       axios
-        .post(api.HOST + props.url.create, user)
+        .post(props.url.create, user)
         .then(updateUsers)
         .catch(alert)
         .finally(() => setIsSpinner(false));

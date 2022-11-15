@@ -1,49 +1,65 @@
+const HOST = "http://localhost:8081";
+
 export const api = {
-  HOST: "http://localhost:8081",
   admin: {
     authorisation: {
-      login: "/admin/authorisation/login",
-      current: "/admin/authorisation/current",
+      login: "/login",
+      current: "/current",
     },
     admins: {
-      getAll: "/admin/admins/",
-      changePassword: "/admin/admins/change-password",
-      deactivate: "/admin/admins/deactivate/",
-      reactivate: "/admin/admins/reactivate/",
-      create: "/admin/admins/",
+      getAll: "/",
+      changePassword: "/change-password",
+      deactivate: "/deactivate/",
+      reactivate: "/reactivate/",
+      create: "/",
     },
     managers: {
-      getAll: "/admin/managers/",
-      changePassword: "/admin/managers/change-password",
-      deactivate: "/admin/managers/deactivate/",
-      reactivate: "/admin/managers/reactivate/",
-      create: "/admin/managers/",
+      getAll: "/",
+      changePassword: "/change-password",
+      deactivate: "/deactivate/",
+      reactivate: "/reactivate/",
+      create: "/",
     },
     operators: {
-      getAll: "/admin/operators/",
-      changePassword: "/admin/operators/change-password",
-      deactivate: "/admin/operators/deactivate/",
-      reactivate: "/admin/operators/reactivate/",
-      create: "/admin/operators/",
+      getAll: "/",
+      changePassword: "/change-password",
+      deactivate: "/deactivate/",
+      reactivate: "/reactivate/",
+      create: "/",
     },
   },
   manager: {
     authorisation: {
-      login: "/manager/authorisation/login",
-      current: "/manager/authorisation/current",
+      login: "/login",
+      current: "/current",
     },
     animals: {
-      getAll: "/manager/animals",
-      create: "/manager/animals",
-      sick: "/manager/animals/sick",
-      recover: "/manager/animals/recover",
-      die: "/manager/animals/die/",
+      getAll: "",
+      create: "",
+      sick: "/sick",
+      recover: "/recover",
+      die: "/die/",
     },
   },
   operator: {
     authorisation: {
-      login: "/operator/authorisation/login",
-      current: "/operator/authorisation/current",
+      login: "/login",
+      current: "/current",
+    },
+    templates: {
+      getAll: "",
+      create: "",
     },
   },
 };
+
+const addRootPrefix = (object: any, prePrefix: string): void => {
+  Object.keys(object).forEach((key) => {
+    if (typeof object[key] === "string") {
+      object[key] = prePrefix + object[key];
+    } else {
+      addRootPrefix(object[key], prePrefix + "/" + key);
+    }
+  });
+};
+addRootPrefix(api, HOST);

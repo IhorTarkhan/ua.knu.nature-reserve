@@ -1,4 +1,4 @@
-export type ManagerAnimalResponse = {
+export type AnimalInfoResponse = {
   id: number;
   nickname: string;
   lookup: string;

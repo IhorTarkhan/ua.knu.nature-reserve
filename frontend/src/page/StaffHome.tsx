@@ -8,6 +8,9 @@ export const StaffHome = (): ReactElement => {
       <nav>
         <ul>
           <li>
+            <Link to={nav.home}>Home</Link>
+          </li>
+          <li>
             <Link to={nav.admin.login}>Admin Login</Link>
           </li>
           <li>

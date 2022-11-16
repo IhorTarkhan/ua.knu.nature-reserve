@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ReactElement } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
@@ -16,53 +16,10 @@ import CheckIcon from "@mui/icons-material/Check";
 import ClearIcon from "@mui/icons-material/Clear";
 import { OperatorExcursionTemplateResponse } from "../../dto/response/operator/OperatorExcursionTemplateResponse";
 import { AnimalInfoResponse } from "../../dto/response/AnimalInfoResponse";
-
-const data: OperatorExcursionTemplateResponse[] = [
-  {
-    id: 1,
-    price: 12,
-    animals: [
-      {
-        id: 1,
-        nickname: "string",
-        lookup: "string",
-        behavioral: "string",
-        alive: true,
-        healthy: true,
-      },
-      {
-        id: 2,
-        nickname: "string 2",
-        lookup: "string 2",
-        behavioral: "string 2",
-        alive: true,
-        healthy: true,
-      },
-    ],
-  },
-  {
-    id: 2,
-    price: 120,
-    animals: [
-      {
-        id: 3,
-        nickname: "string 3",
-        lookup: "string 3",
-        behavioral: "string 3",
-        alive: false,
-        healthy: true,
-      },
-      {
-        id: 2,
-        nickname: "string 2",
-        lookup: "string 2",
-        behavioral: "string 2",
-        alive: true,
-        healthy: true,
-      },
-    ],
-  },
-];
+import { axios } from "../../util/AxiosInterceptor";
+import { AxiosResponse } from "axios";
+import { api } from "../../constant/api";
+import { SpinnerFullScreen } from "../../component/SpinnerFullScreen";
 
 const isAvailable = (a: AnimalInfoResponse): boolean => {
   return a.alive && a.healthy;
@@ -169,19 +126,35 @@ const ExcursionTemplateTableRow = (props: {
 };
 
 export const ExcursionTemplateTable = (): ReactElement => {
+  const [data, setData] = useState<OperatorExcursionTemplateResponse[]>([]);
+  const [isSpinner, setIsSpinner] = useState<boolean>(false);
+
+  useEffect(() => {
+    axios
+      .get(api.operator.templates.getAll)
+      .then((x: AxiosResponse<OperatorExcursionTemplateResponse[]>) => {
+        setData(x.data);
+      })
+      .catch(alert)
+      .finally(() => setIsSpinner(false));
+  }, []);
+
   return (
-    <TableContainer component={Paper}>
-      <Table>
-        <ExcursionTemplateTableHeader />
-        <TableBody>
-          {data.map((row) => (
-            <ExcursionTemplateTableRow
-              key={`excursion-template-${row.id}`}
-              row={row}
-            />
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <>
+      <TableContainer component={Paper}>
+        <Table>
+          <ExcursionTemplateTableHeader />
+          <TableBody>
+            {data.map((row) => (
+              <ExcursionTemplateTableRow
+                key={`excursion-template-${row.id}`}
+                row={row}
+              />
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      {isSpinner && <SpinnerFullScreen />}
+    </>
   );
 };

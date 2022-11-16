@@ -16,7 +16,6 @@ import ua.knu.naturereserve.repository.AnimalsInExcursionTemplateRepository;
 import ua.knu.naturereserve.repository.ExcursionTemplateRepository;
 
 import javax.annotation.PostConstruct;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -64,11 +63,16 @@ public class ExcursionTemplateService {
   @PostConstruct
   public void test() {
     log.info(new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(getAll()));
-//    create(
-//        OperatorCreateExcursionTemplateRequest.builder()
-//            .price(BigDecimal.TEN)
-//            .animalIds(List.of(1L, 2L))
-//            .build());
+    //    create(
+    //        OperatorCreateExcursionTemplateRequest.builder()
+    //            .price(BigDecimal.valueOf(120))
+    //            .animalIds(List.of(2L))
+    //            .build());
+    //    create(
+    //        OperatorCreateExcursionTemplateRequest.builder()
+    //            .price(BigDecimal.valueOf(100))
+    //            .animalIds(List.of(3L, 1L))
+    //            .build());
     log.info(new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(getAll()));
   }
 }

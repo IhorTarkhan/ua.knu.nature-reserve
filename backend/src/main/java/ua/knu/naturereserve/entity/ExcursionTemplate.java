@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Entity
@@ -34,7 +35,8 @@ public class ExcursionTemplate {
 
   public List<Animal> getAnimals() {
     return animalsInExcursionTemplateList.stream()
-        .map(AnimalsInExcursionTemplate::getAnimal)
-        .toList();
+            .sorted(Comparator.comparing(AnimalsInExcursionTemplate::getOrder))
+            .map(AnimalsInExcursionTemplate::getAnimal)
+            .toList();
   }
 }

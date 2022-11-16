@@ -23,9 +23,18 @@ public class ExcursionTemplate {
   @Column(name = "price")
   private BigDecimal price;
 
-  @ManyToMany(targetEntity = Animal.class, fetch = FetchType.EAGER)
-  private List<Animal> animals;
+  @OneToMany(
+      targetEntity = AnimalsInExcursionTemplate.class,
+      fetch = FetchType.EAGER,
+      mappedBy = "excursionTemplate")
+  private List<AnimalsInExcursionTemplate> animalsInExcursionTemplateList;
 
   @OneToMany(mappedBy = "excursionTemplate")
   private List<Excursion> excursions = new ArrayList<>();
+
+  public List<Animal> getAnimals() {
+    return animalsInExcursionTemplateList.stream()
+        .map(AnimalsInExcursionTemplate::getAnimal)
+        .toList();
+  }
 }

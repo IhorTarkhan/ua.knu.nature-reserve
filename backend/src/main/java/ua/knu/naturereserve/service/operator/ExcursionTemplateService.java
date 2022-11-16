@@ -10,6 +10,8 @@ import ua.knu.naturereserve.mapper.AnimalMapper;
 import ua.knu.naturereserve.repository.AnimalRepository;
 import ua.knu.naturereserve.repository.ExcursionTemplateRepository;
 
+import javax.annotation.PostConstruct;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Slf4j
@@ -36,7 +38,15 @@ public class ExcursionTemplateService {
     excursionTemplateRepository.save(
         ExcursionTemplate.builder()
             .price(request.getPrice())
-            .animals(animalRepository.findAllById(request.getAnimalIds()))
+            .build());
+  }
+
+  @PostConstruct
+  public void test() {
+    create(
+        OperatorCreateExcursionTemplateRequest.builder()
+            .price(BigDecimal.TEN)
+            .animalIds(List.of(1L, 2L))
             .build());
   }
 }

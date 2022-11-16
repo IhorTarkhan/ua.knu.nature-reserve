@@ -1,7 +1,7 @@
 import * as React from "react";
 import { ReactElement } from "react";
 import Typography from "@mui/material/Typography";
-import AdbIcon from "@mui/icons-material/Adb";
+import Box from "@mui/material/Box";
 
 interface Props {
   href?: string;
@@ -10,23 +10,26 @@ interface Props {
 export const Logo = (props: Props): ReactElement => {
   return (
     <>
-      <AdbIcon sx={{ mr: 1 }} />
+      <Box sx={{ m: { xs: 1, md: 2 }, height: { xs: "40px", md: "80px" } }}>
+        <img src={"/logo.jpg"} style={{ height: "100%" }} alt={"logo"} />
+      </Box>
       <Typography
-        variant={"h6"}
         noWrap
         component={"a"}
         href={props.href || "/"}
         sx={{
-          mr: 2,
-          flexGrow: 1,
-          fontFamily: "monospace",
+          fontSize: { xs: 18, md: 24 },
+          mr: { xs: 1, md: 2 },
+          textAlign: "center",
           fontWeight: 700,
           letterSpacing: ".3rem",
           color: "inherit",
           textDecoration: "none",
         }}
       >
-        LOGO
+        Lorem
+        <br />
+        Ipsum
       </Typography>
     </>
   );

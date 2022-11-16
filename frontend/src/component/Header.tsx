@@ -61,7 +61,7 @@ export const Header = (props: Props): ReactElement => {
           </Box>
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
-              size={"large"}
+              size={"small"}
               aria-label={"account of current user"}
               aria-controls={"menu-appbar"}
               aria-haspopup={"true"}
@@ -119,7 +119,7 @@ export const Header = (props: Props): ReactElement => {
                 }}
                 onClick={() => setAnchorElNav(null)}
               >
-                {page.label}
+                <Typography variant={"h6"}>{page.label}</Typography>
               </Link>
             ))}
           </Box>

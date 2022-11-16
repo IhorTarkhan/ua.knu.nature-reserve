@@ -5,12 +5,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ua.knu.naturereserve.dto.request.operator.OperatorCreateExcursionTemplateRequest;
 import ua.knu.naturereserve.dto.response.operator.OperatorExcursionTemplateResponse;
 import ua.knu.naturereserve.entity.Animal;
 import ua.knu.naturereserve.entity.AnimalsInExcursionTemplate;
 import ua.knu.naturereserve.entity.ExcursionTemplate;
 import ua.knu.naturereserve.mapper.AnimalMapper;
+import ua.knu.naturereserve.mapper.ExcursionMapper;
 import ua.knu.naturereserve.repository.AnimalRepository;
 import ua.knu.naturereserve.repository.AnimalsInExcursionTemplateRepository;
 import ua.knu.naturereserve.repository.ExcursionTemplateRepository;
@@ -27,8 +29,10 @@ public class ExcursionTemplateService {
   private final ExcursionTemplateRepository excursionTemplateRepository;
   private final AnimalRepository animalRepository;
   private final AnimalMapper animalMapper;
+  private final ExcursionMapper excursionMapper;
   private final AnimalsInExcursionTemplateRepository animalsInExcursionTemplateRepository;
 
+  @Transactional
   public List<OperatorExcursionTemplateResponse> getAll() {
     return excursionTemplateRepository.findAll().stream()
         .map(
@@ -37,6 +41,8 @@ public class ExcursionTemplateService {
                     .id(et.getId())
                     .price(et.getPrice())
                     .animals(et.getAnimals().stream().map(animalMapper::toDtoResponse).toList())
+                    .excursions(
+                        et.getExcursions().stream().map(excursionMapper::toDtoResponse).toList())
                     .build())
         .toList();
   }

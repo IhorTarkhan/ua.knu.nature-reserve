@@ -22,6 +22,7 @@ import { api } from "../../constant/api";
 import { SpinnerFullScreen } from "../../component/SpinnerFullScreen";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
+import Container from "@mui/material/Container";
 
 const isAvailable = (a: AnimalInfoResponse): boolean => {
   return a.alive && a.healthy;
@@ -150,7 +151,7 @@ export const ExcursionTemplateTable = (): ReactElement => {
   }, []);
 
   return (
-    <>
+    <Container>
       <TableContainer component={Paper}>
         <Table>
           <ExcursionTemplateTableHeader />
@@ -165,6 +166,6 @@ export const ExcursionTemplateTable = (): ReactElement => {
         </Table>
       </TableContainer>
       {isSpinner && <SpinnerFullScreen />}
-    </>
+    </Container>
   );
 };

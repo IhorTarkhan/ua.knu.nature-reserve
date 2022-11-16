@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ua.knu.naturereserve.dto.response.AnimalInfoResponse;
+import ua.knu.naturereserve.dto.response.PlanedExcursionInfoResponse;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -17,4 +18,5 @@ public class OperatorExcursionTemplateResponse {
   private Long id;
   private BigDecimal price;
   private List<AnimalInfoResponse> animals;
+  private List<PlanedExcursionInfoResponse> excursions;
 }

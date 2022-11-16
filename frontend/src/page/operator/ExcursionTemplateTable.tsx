@@ -80,7 +80,7 @@ const ExcursionTemplateTableHeader = (): ReactElement => {
   return (
     <TableHead>
       <TableRow>
-        <TableCell />
+        <TableCell width={1} />
         <TableCell>Id</TableCell>
         <TableCell>Price</TableCell>
         <TableCell align={"center"} width={"240px"}>

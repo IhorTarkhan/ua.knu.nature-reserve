@@ -23,6 +23,10 @@ public class Excursion {
   @JoinColumn(name = "operator_id", nullable = false)
   private Operator operator;
 
+  @ManyToOne(targetEntity = ExcursionTemplate.class)
+  @JoinColumn(name = "excursion_template_id", nullable = false)
+  private ExcursionTemplate excursionTemplate;
+
   @Column(name = "time")
   private LocalDateTime time;
 

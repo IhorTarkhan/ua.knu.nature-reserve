@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -24,4 +25,7 @@ public class ExcursionTemplate {
 
   @ManyToMany(targetEntity = Animal.class, fetch = FetchType.EAGER)
   private List<Animal> animals;
+
+  @OneToMany(mappedBy = "excursionTemplate")
+  private List<Excursion> excursions = new ArrayList<>();
 }

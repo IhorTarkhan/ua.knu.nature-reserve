@@ -9,7 +9,7 @@ interface Props {
 
 export const ImageIcon = (props: Props): ReactElement => {
   return (
-    <Icon style={{ textAlign: "center" }}>
+    <Icon style={{ textAlign: "center", height: "100%", width: "100%" }}>
       <img src={props.src} style={{ height: "100%" }} alt={props.alt} />
     </Icon>
   );

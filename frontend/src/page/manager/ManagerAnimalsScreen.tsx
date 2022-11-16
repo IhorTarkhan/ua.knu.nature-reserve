@@ -28,6 +28,7 @@ import { ManagerCreateAnimalRequest } from "../../dto/request/manager/ManagerCre
 import { ManagerSickAnimalRequest } from "../../dto/request/manager/ManagerSickAnimalRequest";
 import { ManagerRecoverAnimalRequest } from "../../dto/request/manager/ManagerRecoverAnimalRequest";
 
+const iconButtonStyle = { height: 51, width: 51 };
 const pages = [{ label: "Animals", location: nav.manager.animals }];
 
 const ThisTableHead = (props: { withoutActions?: boolean }): ReactElement => (
@@ -180,13 +181,19 @@ export const ManagerAnimalsScreen = (): ReactElement => {
                     {availableList?.map((row) => (
                       <ThisTableRow key={row.id} row={row}>
                         <Tooltip title={"Got sick"}>
-                          <IconButton onClick={() => handleSick(row)}>
+                          <IconButton
+                            onClick={() => handleSick(row)}
+                            style={iconButtonStyle}
+                          >
                             <SickIcon fontSize={"large"} />
                           </IconButton>
                         </Tooltip>
                         <Tooltip title={"Died"}>
-                          <IconButton onClick={() => handleDied(row)}>
-                            <ImageIcon src={"/icons/scull.svg"} alt={"die"} />
+                          <IconButton
+                            onClick={() => handleDied(row)}
+                            style={iconButtonStyle}
+                          >
+                            <ImageIcon src={"/icons/df.png"} alt={"die"} />
                           </IconButton>
                         </Tooltip>
                       </ThisTableRow>
@@ -209,13 +216,19 @@ export const ManagerAnimalsScreen = (): ReactElement => {
                     {sickList?.map((row) => (
                       <ThisTableRow key={row.id} row={row}>
                         <Tooltip title={"Recover"}>
-                          <IconButton onClick={() => handleRecover(row)}>
+                          <IconButton
+                            onClick={() => handleRecover(row)}
+                            style={iconButtonStyle}
+                          >
                             <VolunteerActivismIcon fontSize={"large"} />
                           </IconButton>
                         </Tooltip>
                         <Tooltip title={"Died"}>
-                          <IconButton onClick={() => handleDied(row)}>
-                            <ImageIcon src={"/icons/scull.svg"} alt={"die"} />
+                          <IconButton
+                            onClick={() => handleDied(row)}
+                            style={iconButtonStyle}
+                          >
+                            <ImageIcon src={"/icons/df.png"} alt={"die"} />
                           </IconButton>
                         </Tooltip>
                       </ThisTableRow>

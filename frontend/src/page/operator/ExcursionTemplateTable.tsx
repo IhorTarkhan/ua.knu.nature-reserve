@@ -23,9 +23,55 @@ import { SpinnerFullScreen } from "../../component/SpinnerFullScreen";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Container from "@mui/material/Container";
+import { PlanedExcursionInfoResponse } from "../../dto/response/PlanedExcursionInfoResponse";
+import Typography from "@mui/material/Typography";
 
 const isAvailable = (a: AnimalInfoResponse): boolean => {
   return a.alive && a.healthy;
+};
+
+const PlanedExcursionTableHeader = (): ReactElement => {
+  return (
+    <TableHead>
+      <TableRow>
+        <TableCell>Id</TableCell>
+        <TableCell>Time</TableCell>
+        <TableCell>Operator Nickname</TableCell>
+      </TableRow>
+    </TableHead>
+  );
+};
+
+const PlanedExcursionTableRow = (props: {
+  row: PlanedExcursionInfoResponse;
+}): ReactElement => {
+  return (
+    <TableRow>
+      <TableCell>{props.row.id}</TableCell>
+      <TableCell>
+        {props.row.time.toLocaleString().replaceAll("T", " ")}
+      </TableCell>
+      <TableCell>{props.row.operatorNickname}</TableCell>
+    </TableRow>
+  );
+};
+
+const PlanedExcursionTable = (props: {
+  excursions: PlanedExcursionInfoResponse[];
+}): ReactElement => {
+  return (
+    <Table size={"small"}>
+      <PlanedExcursionTableHeader />
+      <TableBody>
+        {props.excursions.map((row) => (
+          <PlanedExcursionTableRow
+            key={`planed-excursion-${row.id}`}
+            row={row}
+          />
+        ))}
+      </TableBody>
+    </Table>
+  );
 };
 
 const AnimalTableHeader = (): ReactElement => {
@@ -127,7 +173,9 @@ const ExcursionTemplateTableRow = (props: {
               <Box hidden={tab !== 0}>
                 <AnimalTable animals={props.row.animals} />
               </Box>
-              <Box hidden={tab !== 1}>Item Two</Box>
+              <Box hidden={tab !== 1}>
+                <PlanedExcursionTable excursions={props.row.excursions} />
+              </Box>
             </Box>
           </Collapse>
         </TableCell>
@@ -152,6 +200,9 @@ export const ExcursionTemplateTable = (): ReactElement => {
 
   return (
     <Container>
+      <Typography variant={"h4"} m={2}>
+        Excursions
+      </Typography>
       <TableContainer component={Paper}>
         <Table>
           <ExcursionTemplateTableHeader />

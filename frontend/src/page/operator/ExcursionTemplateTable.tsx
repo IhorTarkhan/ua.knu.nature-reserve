@@ -20,6 +20,8 @@ import { axios } from "../../util/AxiosInterceptor";
 import { AxiosResponse } from "axios";
 import { api } from "../../constant/api";
 import { SpinnerFullScreen } from "../../component/SpinnerFullScreen";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
 
 const isAvailable = (a: AnimalInfoResponse): boolean => {
   return a.alive && a.healthy;
@@ -92,7 +94,8 @@ const ExcursionTemplateTableHeader = (): ReactElement => {
 const ExcursionTemplateTableRow = (props: {
   row: OperatorExcursionTemplateResponse;
 }): ReactElement => {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [tab, setTab] = useState(0);
 
   return (
     <>
@@ -115,8 +118,15 @@ const ExcursionTemplateTableRow = (props: {
       <TableRow>
         <TableCell style={{ padding: 0 }} colSpan={4}>
           <Collapse in={open} unmountOnExit>
-            <Box sx={{ margin: "20px" }}>
-              <AnimalTable animals={props.row.animals} />
+            <Box sx={{ margin: "20px", marginTop: 0 }}>
+              <Tabs value={tab} onChange={(_, newValue) => setTab(newValue)}>
+                <Tab label={"Animals"} />
+                <Tab label={"Planed Excursions"} />
+              </Tabs>
+              <Box hidden={tab !== 0}>
+                <AnimalTable animals={props.row.animals} />
+              </Box>
+              <Box hidden={tab !== 1}>Item Two</Box>
             </Box>
           </Collapse>
         </TableCell>

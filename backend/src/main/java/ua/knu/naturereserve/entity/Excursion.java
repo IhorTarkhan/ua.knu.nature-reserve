@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -31,5 +32,5 @@ public class Excursion {
   private LocalDateTime time;
 
   @ManyToMany(targetEntity = Client.class)
-  private List<Client> clients;
+  private List<Client> clients = new ArrayList<>();
 }

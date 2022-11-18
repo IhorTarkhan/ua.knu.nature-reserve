@@ -49,6 +49,7 @@ export const api = {
     templates: {
       getAll: "",
       create: "",
+      planeExcursion: "/excursion",
     },
   },
 };

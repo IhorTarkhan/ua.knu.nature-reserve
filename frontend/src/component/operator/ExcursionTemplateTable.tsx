@@ -27,6 +27,12 @@ import { isAllAvailable } from "../../util/AnimalUtil";
 import Button from "@mui/material/Button";
 import { AnimalTable } from "./AnimalTable";
 import { PlanedExcursionTable } from "./PlanedExcursionTable";
+import dayjs, { Dayjs } from "dayjs";
+import TextField from "@mui/material/TextField";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import { OperatorPlaneExcursionRequest } from "../../dto/response/operator/OperatorPlaneExcursionRequest";
 
 const ExcursionTemplateTableHeader = (): ReactElement => {
   return (
@@ -46,8 +52,12 @@ const ExcursionTemplateTableHeader = (): ReactElement => {
 const ExcursionTemplateTableRowCollapse = (props: {
   row: OperatorExcursionTemplateResponse;
   open: boolean;
+  fetchData: () => Promise<any>;
 }): ReactElement => {
   const [tab, setTab] = useState(0);
+  const [value, setValue] = useState<Dayjs>(
+    dayjs(new Date(Date.now() + 3600 * 1000))
+  );
 
   return (
     <Collapse in={props.open} unmountOnExit>
@@ -60,10 +70,31 @@ const ExcursionTemplateTableRowCollapse = (props: {
           <AnimalTable animals={props.row.animals} />
         </Box>
         <Box hidden={tab !== 1}>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DateTimePicker
+              renderInput={(props) => (
+                <TextField {...props} sx={{ margin: 1 }} />
+              )}
+              label={"New excursion time"}
+              value={value}
+              onChange={(newValue) => setValue(newValue!)}
+            />
+          </LocalizationProvider>
           <Button
             variant={"outlined"}
             sx={{ m: 1 }}
             disabled={isAllAvailable(props.row)}
+            onClick={() => {
+              const request: OperatorPlaneExcursionRequest = {
+                time: value.toDate(),
+                excursionTemplateId: props.row.id,
+              };
+              console.log(request);
+              axios
+                .post(api.operator.templates.planeExcursion, request)
+                .then(() => props.fetchData())
+                .catch(alert);
+            }}
           >
             Plane new
           </Button>
@@ -76,6 +107,7 @@ const ExcursionTemplateTableRowCollapse = (props: {
 
 const ExcursionTemplateTableRow = (props: {
   row: OperatorExcursionTemplateResponse;
+  fetchData: () => Promise<any>;
 }): ReactElement => {
   const [open, setOpen] = useState(false);
 
@@ -99,7 +131,11 @@ const ExcursionTemplateTableRow = (props: {
       </TableRow>
       <TableRow>
         <TableCell style={{ padding: 0 }} colSpan={4}>
-          <ExcursionTemplateTableRowCollapse open={open} row={props.row} />
+          <ExcursionTemplateTableRowCollapse
+            open={open}
+            row={props.row}
+            fetchData={props.fetchData}
+          />
         </TableCell>
       </TableRow>
     </>
@@ -110,14 +146,17 @@ export const ExcursionTemplateTable = (): ReactElement => {
   const [data, setData] = useState<OperatorExcursionTemplateResponse[]>([]);
   const [isSpinner, setIsSpinner] = useState<boolean>(false);
 
-  useEffect(() => {
-    axios
+  const fetchData = (): Promise<any> => {
+    return axios
       .get(api.operator.templates.getAll)
-      .then((x: AxiosResponse<OperatorExcursionTemplateResponse[]>) => {
-        setData(x.data);
-      })
-      .catch(alert)
-      .finally(() => setIsSpinner(false));
+      .then((x: AxiosResponse<OperatorExcursionTemplateResponse[]>) =>
+        setData(x.data)
+      )
+      .catch(alert);
+  };
+
+  useEffect(() => {
+    fetchData().finally(() => setIsSpinner(false));
   }, []);
 
   return (
@@ -133,6 +172,7 @@ export const ExcursionTemplateTable = (): ReactElement => {
               <ExcursionTemplateTableRow
                 key={`excursion-template-${row.id}`}
                 row={row}
+                fetchData={fetchData}
               />
             ))}
           </TableBody>

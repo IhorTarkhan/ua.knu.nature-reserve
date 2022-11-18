@@ -1,11 +1,9 @@
 package ua.knu.naturereserve.controller.operator;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ua.knu.naturereserve.dto.request.operator.OperatorCreateExcursionTemplateRequest;
+import ua.knu.naturereserve.dto.request.operator.OperatorPlaneExcursionRequest;
 import ua.knu.naturereserve.dto.response.operator.OperatorExcursionTemplateResponse;
 import ua.knu.naturereserve.service.operator.ExcursionTemplateService;
 
@@ -25,5 +23,10 @@ public class ExcursionTemplateController {
   @PostMapping
   public void create(OperatorCreateExcursionTemplateRequest request) {
     service.create(request);
+  }
+
+  @PostMapping("/excursion")
+  public void planeExcursion(@RequestBody OperatorPlaneExcursionRequest request) {
+    service.planeExcursion(request);
   }
 }

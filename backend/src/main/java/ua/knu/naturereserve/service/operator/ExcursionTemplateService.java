@@ -5,15 +5,20 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ua.knu.naturereserve.dto.request.operator.OperatorCreateExcursionTemplateRequest;
+import ua.knu.naturereserve.dto.request.operator.OperatorPlaneExcursionRequest;
 import ua.knu.naturereserve.dto.response.operator.OperatorExcursionTemplateResponse;
 import ua.knu.naturereserve.entity.Animal;
 import ua.knu.naturereserve.entity.AnimalsInExcursionTemplate;
+import ua.knu.naturereserve.entity.Excursion;
 import ua.knu.naturereserve.entity.ExcursionTemplate;
+import ua.knu.naturereserve.exception.NotFoundException;
 import ua.knu.naturereserve.mapper.AnimalMapper;
 import ua.knu.naturereserve.mapper.ExcursionMapper;
 import ua.knu.naturereserve.repository.AnimalRepository;
 import ua.knu.naturereserve.repository.AnimalsInExcursionTemplateRepository;
+import ua.knu.naturereserve.repository.ExcursionRepository;
 import ua.knu.naturereserve.repository.ExcursionTemplateRepository;
+import ua.knu.naturereserve.security.SecurityService;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -28,6 +33,8 @@ public class ExcursionTemplateService {
   private final AnimalMapper animalMapper;
   private final ExcursionMapper excursionMapper;
   private final AnimalsInExcursionTemplateRepository animalsInExcursionTemplateRepository;
+  private final ExcursionRepository excursionRepository;
+  private final SecurityService securityService;
 
   @Transactional
   public List<OperatorExcursionTemplateResponse> getAll() {
@@ -60,5 +67,22 @@ public class ExcursionTemplateService {
               .build());
     }
     animalsInExcursionTemplateRepository.saveAll(mappers);
+  }
+
+  public void planeExcursion(OperatorPlaneExcursionRequest request) {
+    ExcursionTemplate excursionTemplate =
+        excursionTemplateRepository
+            .findById(request.getExcursionTemplateId())
+            .orElseThrow(
+                () ->
+                    new NotFoundException(
+                        "Excursion Template doesn't exists with id = "
+                            + request.getExcursionTemplateId()));
+    excursionRepository.save(
+        Excursion.builder()
+            .operator(securityService.getCurrentOperator())
+            .excursionTemplate(excursionTemplate)
+            .time(request.getTime())
+            .build());
   }
 }

@@ -42,7 +42,7 @@ import Dialog from "@mui/material/Dialog";
 import { OperatorCreateExcursionTemplateRequest } from "../../dto/request/operator/OperatorCreateExcursionTemplateRequest";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { DNDContainer } from "./DNDContainer";
+import Kanban from "./src/Kanban";
 
 const ExcursionTemplateTableHeader = (): ReactElement => {
   return (
@@ -186,7 +186,7 @@ const CreatePopup = (props: {
           sx={{ mt: 1 }}
         />
         <DndProvider backend={HTML5Backend}>
-          <DNDContainer />
+          <Kanban />
         </DndProvider>
       </DialogContent>
       <DialogActions>
@@ -219,6 +219,7 @@ export const ExcursionTemplateTable = (): ReactElement => {
 
   return (
     <Container>
+      <Kanban />
       <Box display={"flex"} justifyContent={"space-between"}>
         <Typography variant={"h4"} m={2}>
           Excursions

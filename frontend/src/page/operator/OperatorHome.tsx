@@ -2,7 +2,7 @@ import * as React from "react";
 import { ReactElement } from "react";
 import { Header } from "../../component/Header";
 import { nav } from "../../constant/nav";
-import { ExcursionTemplateTable } from "./ExcursionTemplateTable";
+import { ExcursionTemplateTable } from "../../component/operator/ExcursionTemplateTable";
 
 export const OperatorHome = (): ReactElement => {
   const pages = [{ label: "Excursions", location: nav.operator.home }];

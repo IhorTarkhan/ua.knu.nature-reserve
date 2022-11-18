@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { columnsFromBackend } from "./KanbanData";
 import {
   DragDropContext,
   Draggable,
@@ -38,8 +37,27 @@ export const Card = (props: BoxProps & { index: number }) => {
   );
 };
 
-const Kanban = () => {
-  const [columns, setColumns] = useState(columnsFromBackend);
+const data = [
+  { id: "1", text: "id=1" },
+  { id: "2", text: "id=2" },
+  { id: "3", text: "id=3" },
+  { id: "4", text: "id=4" },
+  { id: "5", text: "id=5" },
+];
+
+const columnsData = {
+  "Generation Excursion": {
+    title: "Generation Excursion",
+    items: [data[0], data[1]],
+  },
+  "All Animals": {
+    title: "All Animals",
+    items: [data[2], data[3], data[4]],
+  },
+};
+
+const Dnd = () => {
+  const [columns, setColumns] = useState(columnsData);
 
   const onDragEnd = (result: DropResult, columns: any, setColumns: any) => {
     if (!result.destination) return;
@@ -81,18 +99,18 @@ const Kanban = () => {
     <DragDropContext
       onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
     >
-      <Box style={{ display: "flex", width: "100%" }}>
+      <Box style={{ display: "flex" }}>
         {Object.entries(columns).map(([columnId, column]) => (
           <Column
             key={columnId}
             id={columnId}
-            style={{
+            sx={{
+              m: 1,
+              p: 1,
               width: "300px",
               display: "flex",
               flexDirection: "column",
               background: "#f3f3f3",
-              padding: "15px",
-              margin: "15px",
             }}
           >
             <Typography>{column.title}</Typography>
@@ -101,9 +119,15 @@ const Kanban = () => {
                 key={item.id}
                 id={item.id}
                 index={index}
-                sx={{ background: "white", margin: 1 }}
+                sx={{
+                  m: 1,
+                  p: 1,
+                  borderRadius: 2,
+                  borderStyle: "solid",
+                  background: "white",
+                }}
               >
-                <Typography>{item.Task}</Typography>
+                <Typography>{item.text}</Typography>
               </Card>
             ))}
           </Column>
@@ -114,4 +138,4 @@ const Kanban = () => {
   );
 };
 
-export default Kanban;
+export default Dnd;

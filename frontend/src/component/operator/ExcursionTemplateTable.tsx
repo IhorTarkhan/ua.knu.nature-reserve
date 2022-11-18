@@ -32,7 +32,17 @@ import TextField from "@mui/material/TextField";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
-import { OperatorPlaneExcursionRequest } from "../../dto/response/operator/OperatorPlaneExcursionRequest";
+import { OperatorPlaneExcursionRequest } from "../../dto/request/operator/OperatorPlaneExcursionRequest";
+import Tooltip from "@mui/material/Tooltip";
+import AddIcon from "@mui/icons-material/Add";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogActions from "@mui/material/DialogActions";
+import Dialog from "@mui/material/Dialog";
+import { OperatorCreateExcursionTemplateRequest } from "../../dto/request/operator/OperatorCreateExcursionTemplateRequest";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { DNDContainer } from "./DNDContainer";
 
 const ExcursionTemplateTableHeader = (): ReactElement => {
   return (
@@ -142,9 +152,57 @@ const ExcursionTemplateTableRow = (props: {
   );
 };
 
+const CreatePopup = (props: {
+  open: boolean;
+  close: () => void;
+}): ReactElement => {
+  const [price, setPrice] = useState<number | "">("");
+
+  const onAccept = () => {
+    const request: OperatorCreateExcursionTemplateRequest = {
+      price: 99,
+      animalIds: [2, 1],
+    };
+    console.log(request);
+    props.close();
+  };
+
+  const handleChangePrice = (e: any) => {
+    if (e.target.value == "" || /^[0-9\b]+$/.test(e.target.value)) {
+      setPrice(e.target.value);
+    }
+  };
+
+  return (
+    <Dialog open={props.open} onClose={props.close}>
+      <DialogTitle>Create new excursion template</DialogTitle>
+      <DialogContent>
+        <TextField
+          fullWidth
+          label={"Price"}
+          variant={"outlined"}
+          onChange={handleChangePrice}
+          value={price}
+          sx={{ mt: 1 }}
+        />
+        <DndProvider backend={HTML5Backend}>
+          <DNDContainer />
+        </DndProvider>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={props.close}>Reject</Button>
+        <Button onClick={onAccept} autoFocus>
+          Accept
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
+
 export const ExcursionTemplateTable = (): ReactElement => {
   const [data, setData] = useState<OperatorExcursionTemplateResponse[]>([]);
   const [isSpinner, setIsSpinner] = useState<boolean>(false);
+  const [isCreateOpen, setIsCreateOpen] = useState<boolean>(false);
 
   const fetchData = (): Promise<any> => {
     return axios
@@ -156,14 +214,21 @@ export const ExcursionTemplateTable = (): ReactElement => {
   };
 
   useEffect(() => {
-    fetchData().finally(() => setIsSpinner(false));
-  }, []);
+    if (!isCreateOpen) fetchData().finally(() => setIsSpinner(false));
+  }, [isCreateOpen]);
 
   return (
     <Container>
-      <Typography variant={"h4"} m={2}>
-        Excursions
-      </Typography>
+      <Box display={"flex"} justifyContent={"space-between"}>
+        <Typography variant={"h4"} m={2}>
+          Excursions
+        </Typography>
+        <Tooltip title={"Create new"} sx={{ my: "auto" }}>
+          <IconButton onClick={() => setIsCreateOpen(true)}>
+            <AddIcon fontSize={"large"} />
+          </IconButton>
+        </Tooltip>
+      </Box>
       <TableContainer component={Paper}>
         <Table>
           <ExcursionTemplateTableHeader />
@@ -179,6 +244,7 @@ export const ExcursionTemplateTable = (): ReactElement => {
         </Table>
       </TableContainer>
       {isSpinner && <SpinnerFullScreen />}
+      <CreatePopup open={isCreateOpen} close={() => setIsCreateOpen(false)} />
     </Container>
   );
 };

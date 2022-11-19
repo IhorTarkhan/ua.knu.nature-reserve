@@ -16,6 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 public class OperatorExcursionTemplateResponse {
   private Long id;
+  private String title;
   private BigDecimal price;
   private List<AnimalInfoResponse> animals;
   private List<PlanedExcursionInfoResponse> excursions;

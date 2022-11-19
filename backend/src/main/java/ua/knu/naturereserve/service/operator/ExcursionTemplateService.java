@@ -43,6 +43,7 @@ public class ExcursionTemplateService {
             et ->
                 OperatorExcursionTemplateResponse.builder()
                     .id(et.getId())
+                    .title(et.getTitle())
                     .price(et.getPrice())
                     .animals(et.getAnimals().stream().map(animalMapper::toDtoResponse).toList())
                     .excursions(
@@ -54,7 +55,10 @@ public class ExcursionTemplateService {
   public void create(OperatorCreateExcursionTemplateRequest request) {
     ExcursionTemplate template =
         excursionTemplateRepository.save(
-            ExcursionTemplate.builder().price(request.getPrice()).build());
+            ExcursionTemplate.builder()
+                .title(request.getTitle())
+                .price(request.getPrice())
+                .build());
     List<Animal> animals = animalRepository.findAllById(request.getAnimalIds());
     animals.sort(Comparator.comparingInt(a -> request.getAnimalIds().indexOf(a.getId())));
     List<AnimalsInExcursionTemplate> mappers = new ArrayList<>();

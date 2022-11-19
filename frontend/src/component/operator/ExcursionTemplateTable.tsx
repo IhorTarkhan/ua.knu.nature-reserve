@@ -40,8 +40,9 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import Dialog from "@mui/material/Dialog";
 import { OperatorCreateExcursionTemplateRequest } from "../../dto/request/operator/OperatorCreateExcursionTemplateRequest";
-import Dnd from "./src/Dnd";
+import { Dnd, DndColumns } from "../Dnd";
 import { toJsonDataParam } from "../../util/DateUtil";
+import { AnimalInfoResponse } from "../../dto/response/AnimalInfoResponse";
 
 const ExcursionTemplateTableHeader = (): ReactElement => {
   return (
@@ -49,6 +50,7 @@ const ExcursionTemplateTableHeader = (): ReactElement => {
       <TableRow>
         <TableCell width={1} />
         <TableCell>Id</TableCell>
+        <TableCell>Title</TableCell>
         <TableCell>Price</TableCell>
         <TableCell align={"center"} width={"240px"}>
           Available
@@ -129,6 +131,7 @@ const ExcursionTemplateTableRow = (props: {
           </IconButton>
         </TableCell>
         <TableCell>{props.row.id}</TableCell>
+        <TableCell>{props.row.title}</TableCell>
         <TableCell>{props.row.price}</TableCell>
         <TableCell align={"center"}>
           {isAllAvailable(props.row) ? (
@@ -139,7 +142,7 @@ const ExcursionTemplateTableRow = (props: {
         </TableCell>
       </TableRow>
       <TableRow>
-        <TableCell style={{ padding: 0 }} colSpan={4}>
+        <TableCell style={{ padding: 0 }} colSpan={999}>
           <ExcursionTemplateTableRowCollapse
             open={open}
             row={props.row}
@@ -151,19 +154,53 @@ const ExcursionTemplateTableRow = (props: {
   );
 };
 
+const AnimalInDnd = (props: { animal: AnimalInfoResponse }): ReactElement => {
+  return (
+    <>
+      {props.animal.id} - {props.animal.nickname}
+    </>
+  );
+};
+
 const CreatePopup = (props: {
   open: boolean;
   close: () => void;
 }): ReactElement => {
+  const [title, setTitle] = useState<string>("");
   const [price, setPrice] = useState<number | "">("");
+  const [animals, setAnimals] = useState<DndColumns>({});
+
+  useEffect(() => {
+    axios
+      .get(api.operator.animals)
+      .then((response: AxiosResponse<AnimalInfoResponse[]>) =>
+        setAnimals({
+          new: {
+            title: "Generation Excursion",
+            items: [],
+          },
+          all: {
+            title: "All Animals",
+            items: response.data.map((a) => ({
+              id: `animal-${a.id}`,
+              element: <AnimalInDnd animal={a} />,
+            })),
+          },
+        })
+      )
+      .catch(alert);
+  }, []);
 
   const onAccept = () => {
     const request: OperatorCreateExcursionTemplateRequest = {
-      price: 99,
-      animalIds: [2, 1],
+      title: title,
+      price: +price,
+      animalIds: animals.new.items.map((x) => +x.id.substring(7)),
     };
-    console.log(request);
-    props.close();
+    axios
+      .post(api.operator.templates.create, request)
+      .then(props.close)
+      .catch(alert);
   };
 
   const handleChangePrice = (e: any) => {
@@ -178,13 +215,21 @@ const CreatePopup = (props: {
       <DialogContent>
         <TextField
           fullWidth
+          label={"Title"}
+          variant={"outlined"}
+          onChange={(e) => setTitle(e.target.value)}
+          value={title}
+          sx={{ mt: 1 }}
+        />
+        <TextField
+          fullWidth
           label={"Price"}
           variant={"outlined"}
           onChange={handleChangePrice}
           value={price}
           sx={{ mt: 1 }}
         />
-        <Dnd />
+        <Dnd columns={animals} setColumns={setAnimals} />
       </DialogContent>
       <DialogActions>
         <Button onClick={props.close}>Reject</Button>

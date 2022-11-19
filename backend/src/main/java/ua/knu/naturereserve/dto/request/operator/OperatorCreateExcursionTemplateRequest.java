@@ -13,6 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OperatorCreateExcursionTemplateRequest {
+  private String title;
   private BigDecimal price;
   private List<Long> animalIds;
 }

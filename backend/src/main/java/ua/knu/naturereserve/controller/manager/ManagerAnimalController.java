@@ -12,14 +12,14 @@ import ua.knu.naturereserve.dto.request.manager.ManagerCreateAnimalRequest;
 import ua.knu.naturereserve.dto.request.manager.ManagerRecoverAnimalRequest;
 import ua.knu.naturereserve.dto.request.manager.ManagerSickAnimalRequest;
 import ua.knu.naturereserve.dto.response.AnimalInfoResponse;
-import ua.knu.naturereserve.service.manager.AnimalService;
+import ua.knu.naturereserve.service.AnimalService;
 
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "/manager/animals")
-public class AnimalController {
+public class ManagerAnimalController {
   private final AnimalService service;
 
   @GetMapping

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Dispatch, ReactElement, SetStateAction } from "react";
 import {
   DragDropContext,
   Draggable,
@@ -7,9 +7,8 @@ import {
 } from "react-beautiful-dnd";
 import Box, { BoxProps } from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
 
-export const Column = (props: BoxProps) => {
+const Column = (props: BoxProps) => {
   return (
     <Droppable droppableId={props.id!}>
       {(provided) => (
@@ -22,7 +21,7 @@ export const Column = (props: BoxProps) => {
   );
 };
 
-export const Card = (props: BoxProps & { index: number }) => {
+const Card = (props: BoxProps & { index: number }) => {
   return (
     <Draggable draggableId={props.id!} index={props.index}>
       {(provided) => (
@@ -37,28 +36,18 @@ export const Card = (props: BoxProps & { index: number }) => {
   );
 };
 
-const data = [
-  { id: "1", text: "id=1" },
-  { id: "2", text: "id=2" },
-  { id: "3", text: "id=3" },
-  { id: "4", text: "id=4" },
-  { id: "5", text: "id=5" },
-];
+export type DndCardElement = { id: string; element: ReactElement | string };
 
-const columnsData = {
-  "Generation Excursion": {
-    title: "Generation Excursion",
-    items: [data[0], data[1]],
-  },
-  "All Animals": {
-    title: "All Animals",
-    items: [data[2], data[3], data[4]],
-  },
+export type DndColumns = {
+  [key: string]: { title: string; items: DndCardElement[] };
 };
 
-const Dnd = () => {
-  const [columns, setColumns] = useState(columnsData);
+interface Props {
+  columns: DndColumns;
+  setColumns: Dispatch<SetStateAction<DndColumns>>;
+}
 
+export const Dnd = ({ columns, setColumns }: Props) => {
   const onDragEnd = (result: DropResult, columns: any, setColumns: any) => {
     if (!result.destination) return;
     const { source, destination } = result;
@@ -127,15 +116,12 @@ const Dnd = () => {
                   background: "white",
                 }}
               >
-                <Typography>{item.text}</Typography>
+                {item.element}
               </Card>
             ))}
           </Column>
         ))}
       </Box>
-      <Button onClick={() => console.log(columns)}>test</Button>
     </DragDropContext>
   );
 };
-
-export default Dnd;

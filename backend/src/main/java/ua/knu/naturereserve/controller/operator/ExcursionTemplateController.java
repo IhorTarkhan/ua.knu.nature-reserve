@@ -21,7 +21,7 @@ public class ExcursionTemplateController {
   }
 
   @PostMapping
-  public void create(OperatorCreateExcursionTemplateRequest request) {
+  public void create(@RequestBody OperatorCreateExcursionTemplateRequest request) {
     service.create(request);
   }
 

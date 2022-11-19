@@ -51,6 +51,7 @@ export const api = {
       create: "",
       planeExcursion: "/excursion",
     },
+    animals: "/animals",
   },
 };
 

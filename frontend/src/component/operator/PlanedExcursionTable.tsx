@@ -6,6 +6,7 @@ import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { PlanedExcursionInfoResponse } from "../../dto/response/PlanedExcursionInfoResponse";
+import { toLongFormatDate } from "../../util/DateUtil";
 
 const PlanedExcursionTableHeader = (): ReactElement => {
   return (
@@ -25,9 +26,7 @@ const PlanedExcursionTableRow = (props: {
   return (
     <TableRow>
       <TableCell>{props.row.id}</TableCell>
-      <TableCell>
-        {props.row.time.toLocaleString().replaceAll("T", " ")}
-      </TableCell>
+      <TableCell>{toLongFormatDate(props.row.time)}</TableCell>
       <TableCell>{props.row.operatorNickname}</TableCell>
     </TableRow>
   );

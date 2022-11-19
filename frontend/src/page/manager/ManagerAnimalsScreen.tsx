@@ -21,7 +21,7 @@ import Tooltip from "@mui/material/Tooltip";
 import { ImageIcon } from "../../component/ImageIcon";
 import SickIcon from "@mui/icons-material/Sick";
 import VolunteerActivismIcon from "@mui/icons-material/VolunteerActivism";
-import { fromFormatDate, toFormatDate } from "../../util/DateUtil";
+import { fromFormatDate, toShortFormatDate } from "../../util/DateUtil";
 import AddIcon from "@mui/icons-material/Add";
 import Box from "@mui/material/Box";
 import { ManagerCreateAnimalRequest } from "../../dto/request/manager/ManagerCreateAnimalRequest";
@@ -85,14 +85,14 @@ export const ManagerAnimalsScreen = (): ReactElement => {
   const askDate = (row: AnimalInfoResponse): string | void => {
     const dateString = window.prompt(
       `Animal "${row.nickname}" (with id=${row.id})\n    Enter date in format yyyy-mm-dd`,
-      toFormatDate(new Date())
+      toShortFormatDate(new Date())
     );
     if (dateString == null) return;
 
     const parsedDate = fromFormatDate(dateString);
     if (parsedDate == null) return alert("Invalid date");
 
-    return toFormatDate(parsedDate);
+    return toShortFormatDate(parsedDate);
   };
 
   const handleCreate = () => {

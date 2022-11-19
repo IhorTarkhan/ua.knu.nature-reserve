@@ -82,7 +82,7 @@ public class ExcursionTemplateService {
         Excursion.builder()
             .operator(securityService.getCurrentOperator())
             .excursionTemplate(excursionTemplate)
-            .time(request.getTime())
+            .time(request.getTime().withSecond(0))
             .build());
   }
 }

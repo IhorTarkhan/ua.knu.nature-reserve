@@ -9,6 +9,14 @@ const options: Intl.DateTimeFormatOptions = {
   hour12: false,
 };
 
+export const toJsonDataParam = (x: Date | string): string => {
+  const date = new Date(x);
+  const result = new Date(
+    date.getTime() - date.getTimezoneOffset() * 60 * 1000
+  );
+  return result.toISOString();
+};
+
 export const toShortFormatDate = (x: Date | string): string => {
   return new Date(x).toISOString().split("T")[0];
 };

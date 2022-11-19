@@ -41,6 +41,7 @@ import DialogActions from "@mui/material/DialogActions";
 import Dialog from "@mui/material/Dialog";
 import { OperatorCreateExcursionTemplateRequest } from "../../dto/request/operator/OperatorCreateExcursionTemplateRequest";
 import Dnd from "./src/Dnd";
+import { toJsonDataParam } from "../../util/DateUtil";
 
 const ExcursionTemplateTableHeader = (): ReactElement => {
   return (
@@ -80,6 +81,7 @@ const ExcursionTemplateTableRowCollapse = (props: {
         <Box hidden={tab !== 1}>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DateTimePicker
+              ampm={false}
               renderInput={(props) => (
                 <TextField {...props} sx={{ margin: 1 }} />
               )}
@@ -94,10 +96,9 @@ const ExcursionTemplateTableRowCollapse = (props: {
             disabled={isAllAvailable(props.row)}
             onClick={() => {
               const request: OperatorPlaneExcursionRequest = {
-                time: value.toDate(),
+                time: toJsonDataParam(value.toDate()),
                 excursionTemplateId: props.row.id,
               };
-              console.log(request);
               axios
                 .post(api.operator.templates.planeExcursion, request)
                 .then(() => props.fetchData())

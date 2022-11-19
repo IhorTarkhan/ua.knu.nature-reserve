@@ -1,4 +1,4 @@
 export type OperatorPlaneExcursionRequest = {
-  time: Date;
+  time: any;
   excursionTemplateId: number;
 };

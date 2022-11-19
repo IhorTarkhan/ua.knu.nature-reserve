@@ -23,7 +23,7 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
-import { isAllAvailable } from "../../util/AnimalUtil";
+import { isAllAvailable, isAvailable } from "../../util/AnimalUtil";
 import Button from "@mui/material/Button";
 import { AnimalTable } from "./AnimalTable";
 import { PlanedExcursionTable } from "./PlanedExcursionTable";
@@ -156,9 +156,14 @@ const ExcursionTemplateTableRow = (props: {
 
 const AnimalInDnd = (props: { animal: AnimalInfoResponse }): ReactElement => {
   return (
-    <>
-      {props.animal.id} - {props.animal.nickname}
-    </>
+    <Box style={{ display: "flex" }}>
+      <Typography>{props.animal.nickname}</Typography>
+      {isAvailable(props.animal) ? (
+        <CheckIcon color={"success"} />
+      ) : (
+        <ClearIcon color={"error"} />
+      )}
+    </Box>
   );
 };
 
@@ -181,10 +186,12 @@ const CreatePopup = (props: {
           },
           all: {
             title: "All Animals",
-            items: response.data.map((a) => ({
-              id: `animal-${a.id}`,
-              element: <AnimalInDnd animal={a} />,
-            })),
+            items: response.data
+              .filter((a) => a.alive)
+              .map((a) => ({
+                id: `animal-${a.id}`,
+                element: <AnimalInDnd animal={a} />,
+              })),
           },
         })
       )

@@ -6,7 +6,7 @@ import {
   ManagersList,
   OperatorsList,
 } from "./page/admin/AdminLists";
-import { Home } from "./page/Home";
+import { ClientAvailableExcursions } from "./page/client/ClientAvailableExcursions";
 import { AdminLogin } from "./page/admin/AdminLogin";
 import { ManagerLogin } from "./page/manager/ManagerLogin";
 import { ManagerAnimalsScreen } from "./page/manager/ManagerAnimalsScreen";
@@ -18,7 +18,7 @@ export const App = (): ReactElement => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path={nav.home} element={<Home />} />
+        <Route path={nav.home} element={<ClientAvailableExcursions />} />
         <Route path={nav.staff} element={<StaffHome />} />
         <Route path={nav.admin.login} element={<AdminLogin />} />
         <Route path={nav.admin.admins} element={<AdminsList />} />

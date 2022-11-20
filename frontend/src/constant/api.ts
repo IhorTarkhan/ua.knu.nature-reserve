@@ -53,6 +53,12 @@ export const api = {
     },
     animals: "/animals",
   },
+  client: {
+    templates: {
+      getAll: "",
+      registration: "/registration",
+    },
+  },
 };
 
 const addRootPrefix = (object: any, prePrefix: string): void => {

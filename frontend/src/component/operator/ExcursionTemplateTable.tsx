@@ -95,7 +95,7 @@ const ExcursionTemplateTableRowCollapse = (props: {
           <Button
             variant={"outlined"}
             sx={{ m: 1 }}
-            disabled={isAllAvailable(props.row)}
+            disabled={!isAllAvailable(props.row)}
             onClick={() => {
               const request: OperatorPlaneExcursionRequest = {
                 time: toJsonDataParam(value.toDate()),
@@ -135,9 +135,9 @@ const ExcursionTemplateTableRow = (props: {
         <TableCell>{props.row.price}</TableCell>
         <TableCell align={"center"}>
           {isAllAvailable(props.row) ? (
-            <ClearIcon color={"error"} />
-          ) : (
             <CheckIcon color={"success"} />
+          ) : (
+            <ClearIcon color={"error"} />
           )}
         </TableCell>
       </TableRow>

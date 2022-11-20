@@ -8,5 +8,5 @@ export const isAvailable = (a: AnimalInfoResponse): boolean => {
 export const isAllAvailable = (
   excursionTemplate: OperatorExcursionTemplateResponse
 ): boolean => {
-  return !!excursionTemplate.animals.find((x) => !isAvailable(x));
+  return !excursionTemplate.animals.find((x) => !isAvailable(x));
 };

@@ -3,6 +3,7 @@ package ua.knu.naturereserve.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -31,5 +32,5 @@ public class Client {
   private String email;
 
   @ManyToMany(targetEntity = Excursion.class)
-  private List<Excursion> excursions;
+  private List<Excursion> excursions = new ArrayList<>();
 }

@@ -3,6 +3,7 @@ package ua.knu.naturereserve.service.client;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,9 @@ public class ClientRegistrationService {
   private final ClientRepository clientRepository;
   private final ExcursionRepository excursionRepository;
   private final JavaMailSender javaMailSender;
+
+  @Value("${spring.mail.username}")
+  private String from;
 
   @SneakyThrows
   @Transactional
@@ -49,6 +53,7 @@ public class ClientRegistrationService {
     log.info("start send email");
     MimeMessage mimeMessage = javaMailSender.createMimeMessage();
     MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
+    helper.setFrom(from);
     helper.setTo(request.getEmail());
     helper.setSubject("Lorem Ipsum nature-reserve");
     helper.setText(getHtml(excursion), true);

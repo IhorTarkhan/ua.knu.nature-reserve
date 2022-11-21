@@ -21,12 +21,21 @@ import Tooltip from "@mui/material/Tooltip";
 import { ImageIcon } from "../../component/ImageIcon";
 import SickIcon from "@mui/icons-material/Sick";
 import VolunteerActivismIcon from "@mui/icons-material/VolunteerActivism";
-import { fromFormatDate, toShortFormatDate } from "../../util/DateUtil";
 import AddIcon from "@mui/icons-material/Add";
 import Box from "@mui/material/Box";
 import { ManagerCreateAnimalRequest } from "../../dto/request/manager/ManagerCreateAnimalRequest";
 import { ManagerSickAnimalRequest } from "../../dto/request/manager/ManagerSickAnimalRequest";
 import { ManagerRecoverAnimalRequest } from "../../dto/request/manager/ManagerRecoverAnimalRequest";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import TextField from "@mui/material/TextField";
+import DialogActions from "@mui/material/DialogActions";
+import Button from "@mui/material/Button";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import dayjs, { Dayjs } from "dayjs";
+import { DatePicker } from "@mui/x-date-pickers";
 
 const iconButtonStyle = { height: 51, width: 51 };
 const pages = [{ label: "Animals", location: nav.manager.animals }];
@@ -60,11 +69,176 @@ const ThisTableRow = ({ row, children }: ThisTableRowProps): ReactElement => (
   </TableRow>
 );
 
+const CreatePopup = (props: {
+  isPopup: boolean;
+  close: () => void;
+}): ReactElement => {
+  const [nickname, setNickname] = useState<string>("");
+  const [lookup, setLookup] = useState<string>("");
+  const [behavioral, setBehavioral] = useState<string>("");
+
+  const handleRejectPopup = () => {
+    props.close();
+  };
+
+  const handleAcceptPopup = () => {
+    const request: ManagerCreateAnimalRequest = {
+      nickname,
+      lookup,
+      behavioral,
+    };
+    axios
+      .post(api.manager.animals.create, request)
+      .then(props.close)
+      .catch(alert);
+  };
+
+  return (
+    <Dialog open={props.isPopup} onClose={handleRejectPopup}>
+      <DialogTitle>Create</DialogTitle>
+      <DialogContent>
+        <TextField
+          label={"Nickname"}
+          style={{ width: "100%", marginTop: 10 }}
+          value={nickname}
+          onChange={(x) => setNickname(x.target.value)}
+        />
+        <TextField
+          multiline
+          rows={3}
+          label={"Lookup"}
+          style={{ width: "100%", marginTop: 10 }}
+          value={lookup}
+          onChange={(x) => setLookup(x.target.value)}
+        />
+        <TextField
+          multiline
+          rows={3}
+          label={"Behavioral"}
+          style={{ width: "100%", marginTop: 10 }}
+          value={behavioral}
+          onChange={(x) => setBehavioral(x.target.value)}
+        />
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleRejectPopup}>Reject</Button>
+        <Button onClick={handleAcceptPopup} autoFocus>
+          Accept
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
+
+const SickPopup = (props: {
+  id?: number;
+  isPopup: boolean;
+  close: () => void;
+}): ReactElement => {
+  const [description, setDescription] = useState<string>("");
+  const [value, setValue] = useState<Dayjs>(dayjs(new Date()));
+
+  const handleRejectPopup = () => {
+    props.close();
+  };
+
+  const handleAcceptPopup = () => {
+    const date = value.toDate();
+    const request: ManagerSickAnimalRequest = {
+      id: props.id,
+      date: date.toISOString().split("T")[0],
+      description,
+    };
+    axios.put(api.manager.animals.sick, request).then(props.close).catch(alert);
+  };
+
+  return (
+    <Dialog open={props.isPopup} onClose={handleRejectPopup}>
+      <DialogTitle>Make sick</DialogTitle>
+      <DialogContent>
+        <TextField
+          label={"Description"}
+          style={{ width: "100%", marginTop: 10 }}
+          value={description}
+          onChange={(x) => setDescription(x.target.value)}
+        />
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker
+            renderInput={(props) => (
+              <TextField {...props} style={{ width: "100%", marginTop: 10 }} />
+            )}
+            label={"Illness date"}
+            value={value}
+            onChange={(newValue) => setValue(newValue!)}
+          />
+        </LocalizationProvider>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleRejectPopup}>Reject</Button>
+        <Button onClick={handleAcceptPopup} autoFocus>
+          Accept
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
+const RecoverPopup = (props: {
+  id?: number;
+  isPopup: boolean;
+  close: () => void;
+}): ReactElement => {
+  const [value, setValue] = useState<Dayjs>(dayjs(new Date()));
+
+  const handleRejectPopup = () => {
+    props.close();
+  };
+
+  const handleAcceptPopup = () => {
+    const date = value.toDate();
+    const request: ManagerRecoverAnimalRequest = {
+      id: props.id,
+      date: date.toISOString().split("T")[0],
+    };
+    axios
+      .put(api.manager.animals.recover, request)
+      .then(props.close)
+      .catch(alert);
+  };
+
+  return (
+    <Dialog open={props.isPopup} onClose={handleRejectPopup}>
+      <DialogTitle>Recover</DialogTitle>
+      <DialogContent>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker
+            renderInput={(props) => (
+              <TextField {...props} style={{ width: "100%", marginTop: 10 }} />
+            )}
+            label={"Illness date"}
+            value={value}
+            onChange={(newValue) => setValue(newValue!)}
+          />
+        </LocalizationProvider>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleRejectPopup}>Reject</Button>
+        <Button onClick={handleAcceptPopup} autoFocus>
+          Accept
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
+
 export const ManagerAnimalsScreen = (): ReactElement => {
   const [isSpinner, setIsSpinner] = useState<boolean>(true);
   const [availableList, setAvailableList] = useState<AnimalInfoResponse[]>();
   const [sickList, setSickList] = useState<AnimalInfoResponse[]>();
   const [diedList, setDiedList] = useState<AnimalInfoResponse[]>();
+  const [createPopup, setCreatePopup] = useState<boolean>(false);
+  const [editable, setEditable] = useState<number>();
+  const [sick, setSick] = useState<boolean>(false);
+  const [recover, setRecover] = useState<boolean>(false);
 
   const updateAnimals = () => {
     return axios
@@ -82,78 +256,27 @@ export const ManagerAnimalsScreen = (): ReactElement => {
     updateAnimals().finally(() => setIsSpinner(false));
   }, []);
 
-  const askDate = (row: AnimalInfoResponse): string | void => {
-    const dateString = window.prompt(
-      `Animal "${row.nickname}" (with id=${row.id})\n    Enter date in format yyyy-mm-dd`,
-      toShortFormatDate(new Date())
-    );
-    if (dateString == null) return;
-
-    const parsedDate = fromFormatDate(dateString);
-    if (parsedDate == null) return alert("Invalid date");
-
-    return toShortFormatDate(parsedDate);
-  };
-
-  const handleCreate = () => {
-    let nickname;
-    let lookup;
-    let behavioral;
-    if (!(nickname = window.prompt(`Enter nickname`))) return;
-    if (!(lookup = window.prompt(`Enter lookup`))) return;
-    if (!(behavioral = window.prompt(`Enter behavioral`))) return;
-    const request: ManagerCreateAnimalRequest = {
-      nickname,
-      lookup,
-      behavioral,
-    };
-    axios
-      .post(api.manager.animals.create, request)
-      .then(updateAnimals)
-      .catch(alert);
-  };
-
   const handleSick = (row: AnimalInfoResponse) => {
-    let date;
-    let description;
-    if (!(date = askDate(row))) return;
-    if (!(description = window.prompt(`Enter illness description`))) return;
-    const request: ManagerSickAnimalRequest = {
-      id: row.id,
-      date,
-      description,
-    };
-    axios
-      .put(api.manager.animals.sick, request)
-      .then(updateAnimals)
-      .catch(alert);
+    setSick(true);
+    setEditable(row.id);
   };
 
   const handleRecover = (row: AnimalInfoResponse) => {
-    let date;
-    if (!(date = askDate(row))) return;
-    const request: ManagerRecoverAnimalRequest = {
-      id: row.id,
-      date,
-    };
-    axios
-      .put(api.manager.animals.recover, request)
-      .then(updateAnimals)
-      .catch(alert);
+    setRecover(true);
+    setEditable(row.id);
   };
 
   const handleDied = (row: AnimalInfoResponse) => {
     if (
-      !window.confirm(
+      window.confirm(
         `Mark animal "${row.nickname}" (with id=${row.id}) as dead?`
       )
     ) {
-      return;
+      axios
+        .put(api.manager.animals.die + row.id)
+        .then(updateAnimals)
+        .catch(alert);
     }
-    axios
-      .put(api.manager.animals.die + row.id)
-      .then(updateAnimals)
-      .catch(alert);
   };
 
   return (
@@ -163,7 +286,11 @@ export const ManagerAnimalsScreen = (): ReactElement => {
         <>
           <Box display={"flex"} justifyContent={"end"} m={2}>
             <Tooltip title={"Create new"}>
-              <IconButton onClick={handleCreate}>
+              <IconButton
+                onClick={() => {
+                  setCreatePopup(true);
+                }}
+              >
                 <AddIcon fontSize={"large"} />
               </IconButton>
             </Tooltip>
@@ -258,6 +385,26 @@ export const ManagerAnimalsScreen = (): ReactElement => {
           )}
         </>
       </Container>
+      <CreatePopup
+        isPopup={createPopup}
+        close={() => {
+          updateAnimals().then(() => setCreatePopup(false));
+        }}
+      />
+      <SickPopup
+        isPopup={sick}
+        close={() => {
+          updateAnimals().then(() => setSick(false));
+        }}
+        id={editable}
+      />
+      <RecoverPopup
+        isPopup={recover}
+        close={() => {
+          updateAnimals().then(() => setRecover(false));
+        }}
+        id={editable}
+      />
 
       {isSpinner && <SpinnerFullScreen />}
     </>

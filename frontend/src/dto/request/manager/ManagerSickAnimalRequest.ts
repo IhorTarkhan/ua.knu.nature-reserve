@@ -1,5 +1,5 @@
 export type ManagerSickAnimalRequest = {
-  id: number;
+  id?: number;
   date: string;
   description: string;
 };

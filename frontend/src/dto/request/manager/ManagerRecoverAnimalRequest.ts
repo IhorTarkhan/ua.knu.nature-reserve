@@ -1,4 +1,4 @@
 export type ManagerRecoverAnimalRequest = {
-  id: number;
+  id?: number;
   date: string;
 };

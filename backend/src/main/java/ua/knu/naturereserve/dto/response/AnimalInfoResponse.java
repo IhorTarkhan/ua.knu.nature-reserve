@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+import java.util.Map;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -16,4 +19,6 @@ public class AnimalInfoResponse {
   private String behavioral;
   private boolean isAlive;
   private boolean isHealthy;
+  private BigDecimal keeping;
+  private Map<String, BigDecimal> illnessKeeping;
 }

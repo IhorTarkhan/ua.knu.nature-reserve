@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
@@ -41,4 +42,7 @@ public class AnimalIllness {
 
   @Column(name = "description", nullable = false)
   private String description;
+
+  @Column(name = "keeping", nullable = false)
+  private BigDecimal keeping;
 }

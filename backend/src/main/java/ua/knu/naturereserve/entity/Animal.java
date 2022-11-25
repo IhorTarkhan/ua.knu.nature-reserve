@@ -3,6 +3,7 @@ package ua.knu.naturereserve.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +28,9 @@ public class Animal {
 
   @Column(name = "behavioral", nullable = false)
   private String behavioral;
+
+  @Column(name = "keeping", nullable = false)
+  private BigDecimal keeping;
 
   @Builder.Default
   @Column(name = "is_alive", nullable = false)

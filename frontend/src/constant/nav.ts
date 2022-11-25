@@ -6,6 +6,7 @@ export const nav = {
     admins: "/admin/admins",
     managers: "/admin/managers",
     operators: "/admin/operators",
+    statistics: "/admin/statistics",
   },
   manager: {
     login: "/manager/login",

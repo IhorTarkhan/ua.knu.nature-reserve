@@ -48,6 +48,7 @@ const pages = [
   { label: "Admins", location: nav.admin.admins },
   { label: "Managers", location: nav.admin.managers },
   { label: "Operators", location: nav.admin.operators },
+  { label: "Statistics", location: nav.admin.statistics },
 ];
 
 interface Props {

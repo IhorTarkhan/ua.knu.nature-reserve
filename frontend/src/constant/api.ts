@@ -27,6 +27,7 @@ export const api = {
       reactivate: "/reactivate/",
       create: "/",
     },
+    statistics: "/statistics/",
   },
   manager: {
     authorisation: {

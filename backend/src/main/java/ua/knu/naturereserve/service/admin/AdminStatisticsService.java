@@ -35,7 +35,7 @@ public class AdminStatisticsService {
                 AdminStatisticsResponse.builder()
                     .day(day)
                     .animals(getAnimals(animals, day))
-                    .exceptions(getExcursions(excursions, day))
+                    .excursions(getExcursions(excursions, day))
                     .build())
         .toList();
   }

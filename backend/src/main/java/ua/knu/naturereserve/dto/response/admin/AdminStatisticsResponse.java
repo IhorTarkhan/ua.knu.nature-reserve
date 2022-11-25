@@ -18,7 +18,7 @@ import java.util.Map;
 public class AdminStatisticsResponse {
   private LocalDate day;
   private List<AnimalResponse> animals;
-  private List<ExcursionResponse> exceptions;
+  private List<ExcursionResponse> excursions;
 
   @Data
   @Builder

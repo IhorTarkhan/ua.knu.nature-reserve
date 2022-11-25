@@ -1,3 +1,5 @@
+import { Dayjs } from "dayjs";
+
 const options: Intl.DateTimeFormatOptions = {
   weekday: "long",
   year: "numeric",
@@ -16,8 +18,8 @@ export const toJsonDataParam = (x: Date | string): string => {
   return result.toISOString();
 };
 
-export const toShortFormatDate = (x: Date | string): string => {
-  return new Date(x).toISOString().split("T")[0];
+export const toShortFormatDate = (x: Dayjs): string => {
+  return x.toDate().toISOString().split("T")[0];
 };
 
 export const toLongFormatDate = (x: Date | string): string => {

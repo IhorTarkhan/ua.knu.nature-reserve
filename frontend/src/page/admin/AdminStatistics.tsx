@@ -226,6 +226,41 @@ export const AdminStatistics = () => {
           </Box>
         </LocalizationProvider>
         <Box>
+          <Box display={"flex"} mt={2} mb={5}>
+            <Typography variant={"h5"} width={"50%"}>
+              <b>
+                Total Income:{" "}
+                {statistics
+                  .map((data) =>
+                    data.excursions
+                      .map((e) => e.price * e.visitors)
+                      .reduce((a, b) => a + b, 0)
+                  )
+                  .reduce((a, b) => a + b, 0)}
+                $
+              </b>
+            </Typography>
+            <Typography variant={"h5"}>
+              <b>
+                Total Outcome:{" "}
+                {statistics
+                  .map((data) =>
+                    data.animals
+                      .map(
+                        (a) =>
+                          a.keeping +
+                          Object.values(a.illnessKeeping).reduce(
+                            (a, b) => a + b,
+                            0
+                          )
+                      )
+                      .reduce((a, b) => a + b, 0)
+                  )
+                  .reduce((a, b) => a + b, 0)}
+                $
+              </b>
+            </Typography>
+          </Box>
           {statistics.map((s) => (
             <Row data={s} key={s.day} />
           ))}

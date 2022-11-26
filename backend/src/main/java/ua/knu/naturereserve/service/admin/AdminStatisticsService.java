@@ -29,7 +29,7 @@ public class AdminStatisticsService {
     List<Animal> animals = animalRepository.findAll();
     List<Excursion> excursions = excursionRepository.findAll();
     return Stream.iterate(startDate, date -> date.plusDays(1))
-        .limit(ChronoUnit.DAYS.between(startDate, endDate))
+        .limit(ChronoUnit.DAYS.between(startDate, endDate) + 1)
         .map(
             day ->
                 AdminStatisticsResponse.builder()

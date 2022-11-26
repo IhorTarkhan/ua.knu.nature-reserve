@@ -35,7 +35,7 @@ const Row = ({ data }: { data: AdminStatisticsResponse }) => {
   const [open, setOpen] = useState(false);
 
   return (
-    <Box sx={{ mb: 3 }}>
+    <Box sx={{ my: 2 }}>
       <Typography variant={"h4"}>
         {toLongFormatDateWithoutTime(data.day)}
       </Typography>
@@ -73,20 +73,20 @@ const Row = ({ data }: { data: AdminStatisticsResponse }) => {
                 <Box
                   style={{ display: "flex", justifyContent: "space-between" }}
                 >
-                  <span style={{ background: "white" }}>
+                  <span style={{ background: "white", paddingRight: "3px" }}>
                     {e.title} ({e.time.slice(0, -3)})
                   </span>
                   <span
                     style={{
                       background: "white",
-                      paddingLeft: "2px",
+                      paddingLeft: "3px",
                       paddingRight: "50px",
                     }}
                   >
                     {e.visitors} x {e.price}$
                   </span>
                   <span style={{ position: "absolute", zIndex: -1 }}>
-                    {" " + ".".repeat(120)}
+                    {".".repeat(120)}
                   </span>
                 </Box>
               ))}
@@ -94,10 +94,78 @@ const Row = ({ data }: { data: AdminStatisticsResponse }) => {
         </Box>
         <Box sx={{ flexGrow: 1 }}>
           <Typography variant={"h5"} mt={1}>
-            Outcome:
+            Outcome:{" "}
+            {data.animals
+              .map(
+                (a) =>
+                  a.keeping +
+                  Object.values(a.illnessKeeping).reduce((a, b) => a + b, 0)
+              )
+              .reduce((a, b) => a + b, 0)}
+            $
           </Typography>
           <Collapse in={open} unmountOnExit>
-            text
+            <Typography variant={"h6"} mt={1}>
+              <b>Animals keeping:</b>
+            </Typography>
+            {data.animals.map((a) => (
+              <Box style={{ display: "flex", justifyContent: "space-between" }}>
+                <span style={{ background: "white", paddingRight: "3px" }}>
+                  {a.nickname}
+                </span>
+                <span
+                  style={{
+                    background: "white",
+                    paddingLeft: "3px",
+                    paddingRight: "50px",
+                  }}
+                >
+                  {a.keeping}$
+                </span>
+                <span style={{ position: "absolute", zIndex: -1 }}>
+                  {".".repeat(100)}
+                </span>
+              </Box>
+            ))}
+            {data.animals.flatMap((a) => Object.keys(a.illnessKeeping)).length >
+              0 && (
+              <>
+                <Typography variant={"h6"} mt={1}>
+                  <b>Animals keeping:</b>
+                </Typography>
+                {data.animals.map((a) => (
+                  <>
+                    <b>{a.nickname}</b>
+                    {Object.entries(a.illnessKeeping).map(([iName, iPrice]) => (
+                      <Box
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <span
+                          style={{ background: "white", paddingRight: "3px" }}
+                        >
+                          {iName}
+                        </span>
+                        <span
+                          style={{
+                            background: "white",
+                            paddingLeft: "3px",
+                            paddingRight: "50px",
+                          }}
+                        >
+                          {iPrice}$
+                        </span>
+                        <span style={{ position: "absolute", zIndex: -1 }}>
+                          {".".repeat(100)}
+                        </span>
+                      </Box>
+                    ))}
+                  </>
+                ))}
+              </>
+            )}
           </Collapse>
         </Box>
       </Box>

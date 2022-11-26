@@ -37,6 +37,7 @@ public class AdminStatisticsResponse {
   public static class ExcursionResponse {
     private LocalTime time;
     private String title;
+    private BigDecimal price;
     private Integer visitors;
   }
 }

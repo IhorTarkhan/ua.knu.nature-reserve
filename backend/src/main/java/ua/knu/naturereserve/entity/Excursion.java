@@ -4,7 +4,6 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -31,6 +30,10 @@ public class Excursion {
   @Column(name = "time")
   private LocalDateTime time;
 
-  @ManyToMany(targetEntity = Client.class)
-  private List<Client> clients = new ArrayList<>();
+  @ManyToMany(targetEntity = Client.class, cascade = CascadeType.ALL)
+  @JoinTable(
+      name = "client_excursions",
+      joinColumns = @JoinColumn(name = "client_id"),
+      inverseJoinColumns = @JoinColumn(name = "excursions_id"))
+  private List<Client> clients;
 }

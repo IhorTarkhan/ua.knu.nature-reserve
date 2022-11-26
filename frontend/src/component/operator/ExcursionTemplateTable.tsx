@@ -211,7 +211,7 @@ const CreatePopup = (props: {
   };
 
   const handleChangePrice = (e: any) => {
-    if (e.target.value == "" || /^[0-9\b]+$/.test(e.target.value)) {
+    if (e.target.value === "" || /^[0-9\b]+$/.test(e.target.value)) {
       setPrice(e.target.value);
     }
   };

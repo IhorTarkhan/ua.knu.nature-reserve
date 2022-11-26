@@ -71,6 +71,7 @@ public class AdminStatisticsService {
                     .time(e.getTime().toLocalTime())
                     .title(e.getExcursionTemplate().getTitle())
                     .visitors(e.getClients().size())
+                    .price(e.getExcursionTemplate().getPrice())
                     .build())
         .toList();
   }

@@ -32,5 +32,5 @@ public class Client {
   private String email;
 
   @ManyToMany(targetEntity = Excursion.class)
-  private List<Excursion> excursions = new ArrayList<>();
+  private List<Excursion> excursions;
 }

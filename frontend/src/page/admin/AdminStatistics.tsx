@@ -13,8 +13,16 @@ import Button from "@mui/material/Button";
 import { AdminStatisticsResponse } from "../../dto/response/admin/AdminStatisticsResponse";
 import { axios } from "../../util/AxiosInterceptor";
 import { api } from "../../constant/api";
-import { toShortFormatDate } from "../../util/DateUtil";
+import {
+  toLongFormatDateWithoutTime,
+  toShortFormatDate,
+} from "../../util/DateUtil";
 import { AxiosResponse } from "axios";
+import Typography from "@mui/material/Typography";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import IconButton from "@mui/material/IconButton";
+import Collapse from "@mui/material/Collapse";
 
 const pages = [
   { label: "Admins", location: nav.admin.admins },
@@ -22,6 +30,81 @@ const pages = [
   { label: "Operators", location: nav.admin.operators },
   { label: "Statistics", location: nav.admin.statistics },
 ];
+
+const Row = ({ data }: { data: AdminStatisticsResponse }) => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <Box sx={{ mb: 3 }}>
+      <Typography variant={"h4"}>
+        {toLongFormatDateWithoutTime(data.day)}
+      </Typography>
+      <Box display={"flex"}>
+        <IconButton
+          onClick={() => setOpen((prev) => !prev)}
+          sx={{ mt: 0, mb: "auto" }}
+        >
+          {open ? (
+            <KeyboardArrowUpIcon fontSize={"large"} />
+          ) : (
+            <KeyboardArrowDownIcon fontSize={"large"} />
+          )}
+        </IconButton>
+        <Box sx={{ width: "50%" }}>
+          <Typography variant={"h5"} mt={1}>
+            Income:{" "}
+            {data.excursions
+              .map((e) => e.price * e.visitors)
+              .reduce((a, b) => a + b, 0)}
+            $
+          </Typography>
+          <Collapse
+            in={
+              open && data.excursions.filter((e) => e.visitors > 0).length > 0
+            }
+            unmountOnExit
+          >
+            <Typography variant={"h6"} mt={1}>
+              <b>Excursions:</b>
+            </Typography>
+            {data.excursions
+              .filter((e) => e.visitors > 0)
+              .map((e) => (
+                <Box
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <span style={{ background: "white" }}>
+                    {e.title} ({e.time.slice(0, -3)})
+                  </span>
+                  <span
+                    style={{
+                      background: "white",
+                      paddingLeft: "2px",
+                      paddingRight: "50px",
+                    }}
+                  >
+                    {e.visitors} x {e.price}$
+                  </span>
+                  <span style={{ position: "absolute", zIndex: -1 }}>
+                    {" " + ".".repeat(120)}
+                  </span>
+                </Box>
+              ))}
+          </Collapse>
+        </Box>
+        <Box sx={{ flexGrow: 1 }}>
+          <Typography variant={"h5"} mt={1}>
+            Outcome:
+          </Typography>
+          <Collapse in={open} unmountOnExit>
+            text
+          </Collapse>
+        </Box>
+      </Box>
+    </Box>
+  );
+};
+
 export const AdminStatistics = () => {
   const [start, setStart] = useState<Dayjs>(dayjs(new Date()));
   const [end, setEnd] = useState<Dayjs>(dayjs(new Date()));
@@ -74,6 +157,11 @@ export const AdminStatistics = () => {
             </Button>
           </Box>
         </LocalizationProvider>
+        <Box>
+          {statistics.map((s) => (
+            <Row data={s} key={s.day} />
+          ))}
+        </Box>
       </Container>
     </>
   );

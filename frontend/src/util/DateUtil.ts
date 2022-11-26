@@ -1,15 +1,5 @@
 import { Dayjs } from "dayjs";
 
-const options: Intl.DateTimeFormatOptions = {
-  weekday: "long",
-  year: "numeric",
-  month: "long",
-  day: "numeric",
-  hour: "2-digit",
-  minute: "2-digit",
-  hour12: false,
-};
-
 export const toJsonDataParam = (x: Date | string): string => {
   const date = new Date(x);
   const result = new Date(
@@ -23,7 +13,24 @@ export const toShortFormatDate = (x: Dayjs): string => {
 };
 
 export const toLongFormatDate = (x: Date | string): string => {
-  return new Date(x).toLocaleDateString("en-US", options);
+  return new Date(x).toLocaleDateString("en-US", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  });
+};
+
+export const toLongFormatDateWithoutTime = (x: Date | string): string => {
+  return new Date(x).toLocaleDateString("en-US", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 };
 
 export const fromFormatDate = (x: string): Date | null => {

@@ -1,5 +1,5 @@
 export type AdminStatisticsResponse = {
-  day: Date;
+  day: string;
   animals: AnimalResponse[];
   excursions: ExcursionResponse[];
 };
@@ -11,7 +11,8 @@ type AnimalResponse = {
 };
 
 type ExcursionResponse = {
-  time: Date;
+  time: string;
   title: string;
   visitors: number;
+  price: number;
 };

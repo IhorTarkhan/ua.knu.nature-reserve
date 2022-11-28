@@ -133,37 +133,44 @@ const Row = ({ data }: { data: AdminStatisticsResponse }) => {
                 <Typography variant={"h6"} mt={1}>
                   <b>Animals keeping:</b>
                 </Typography>
-                {data.animals.map((a) => (
-                  <>
-                    <b>{a.nickname}</b>
-                    {Object.entries(a.illnessKeeping).map(([iName, iPrice]) => (
-                      <Box
-                        style={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                        }}
-                      >
-                        <span
-                          style={{ background: "white", paddingRight: "3px" }}
-                        >
-                          {iName}
-                        </span>
-                        <span
-                          style={{
-                            background: "white",
-                            paddingLeft: "3px",
-                            paddingRight: "50px",
-                          }}
-                        >
-                          {iPrice}$
-                        </span>
-                        <span style={{ position: "absolute", zIndex: -1 }}>
-                          {".".repeat(100)}
-                        </span>
-                      </Box>
-                    ))}
-                  </>
-                ))}
+                {data.animals
+                  .filter((a) => Object.entries(a.illnessKeeping).length > 0)
+                  .map((a) => (
+                    <Box>
+                      <b>{a.nickname}</b>
+                      {Object.entries(a.illnessKeeping).map(
+                        ([iName, iPrice]) => (
+                          <Box
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                            }}
+                          >
+                            <span
+                              style={{
+                                background: "white",
+                                paddingRight: "3px",
+                              }}
+                            >
+                              {iName}
+                            </span>
+                            <span
+                              style={{
+                                background: "white",
+                                paddingLeft: "3px",
+                                paddingRight: "50px",
+                              }}
+                            >
+                              {iPrice}$
+                            </span>
+                            <span style={{ position: "absolute", zIndex: -1 }}>
+                              {".".repeat(100)}
+                            </span>
+                          </Box>
+                        )
+                      )}
+                    </Box>
+                  ))}
               </>
             )}
           </Collapse>

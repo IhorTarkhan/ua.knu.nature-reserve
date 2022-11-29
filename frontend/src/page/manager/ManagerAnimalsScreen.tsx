@@ -76,6 +76,7 @@ const CreatePopup = (props: {
   const [nickname, setNickname] = useState<string>("");
   const [lookup, setLookup] = useState<string>("");
   const [behavioral, setBehavioral] = useState<string>("");
+  const [price, setPrice] = useState<number>(1);
 
   const handleRejectPopup = () => {
     props.close();
@@ -86,6 +87,7 @@ const CreatePopup = (props: {
       nickname,
       lookup,
       behavioral,
+      price,
     };
     axios
       .post(api.manager.animals.create, request)
@@ -119,6 +121,12 @@ const CreatePopup = (props: {
           value={behavioral}
           onChange={(x) => setBehavioral(x.target.value)}
         />
+        <TextField
+          label={"Keeping price"}
+          style={{ width: "100%", marginTop: 10 }}
+          value={price}
+          onChange={(x) => setPrice((prev) => +x.target.value || prev)}
+        />
       </DialogContent>
       <DialogActions>
         <Button onClick={handleRejectPopup}>Reject</Button>
@@ -137,6 +145,7 @@ const SickPopup = (props: {
 }): ReactElement => {
   const [description, setDescription] = useState<string>("");
   const [value, setValue] = useState<Dayjs>(dayjs(new Date()));
+  const [price, setPrice] = useState<number>(1);
 
   const handleRejectPopup = () => {
     props.close();
@@ -148,6 +157,7 @@ const SickPopup = (props: {
       id: props.id,
       date: date.toISOString().split("T")[0],
       description,
+      price,
     };
     axios.put(api.manager.animals.sick, request).then(props.close).catch(alert);
   };
@@ -172,6 +182,12 @@ const SickPopup = (props: {
             onChange={(newValue) => setValue(newValue!)}
           />
         </LocalizationProvider>
+        <TextField
+          label={"Keeping price"}
+          style={{ width: "100%", marginTop: 10 }}
+          value={price}
+          onChange={(x) => setPrice((prev) => +x.target.value || prev)}
+        />
       </DialogContent>
       <DialogActions>
         <Button onClick={handleRejectPopup}>Reject</Button>

@@ -33,6 +33,7 @@ public class AnimalService {
             .nickname(request.getNickname())
             .lookup(request.getLookup())
             .behavioral(request.getBehavioral())
+            .keeping(request.getPrice())
             .build());
   }
 
@@ -43,6 +44,7 @@ public class AnimalService {
             .animal(animal)
             .start(request.getDate())
             .description(request.getDescription())
+            .keeping(request.getPrice())
             .build());
   }
 
